@@ -42,8 +42,8 @@ apps/
 packages/
   shared/       types + schémas Zod + constantes partagés
   tsconfig/     configs TypeScript de base
-infra/          Docker Compose, Dockerfiles, reverse proxy   (PR #5)
-docs/           architecture, déploiement, auth
+infra/          Docker Compose (prod), Dockerfiles, Caddy (VPS Hostinger)
+docs/           architecture, déploiement (docs/deployment.md), auth
 ```
 
 ## Scripts

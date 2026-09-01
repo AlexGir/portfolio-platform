@@ -106,3 +106,42 @@ jobs:
           name: playwright-report
           path: apps/web/playwright-report
           retention-days: 7
+
+  docker-build:
+    name: docker build (api + web)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build api image
+        run: docker build -f infra/docker/api.Dockerfile -t portfolio-api:ci .
+
+      - name: Build web image
+        run: |
+          docker build -f infra/docker/web.Dockerfile \
+            --build-arg NEXT_PUBLIC_API_URL=https://api.alexandregiraud.tech \
+            -t portfolio-web:ci .
+
+  deploy:
+    name: deploy (Hostinger VPS)
+    needs: [verify, e2e, docker-build]
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      github.event_name == 'push' &&
+      vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd /opt/portfolio-platform
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose -f infra/compose.prod.yaml up -d --build
+            docker compose -f infra/compose.prod.yaml exec -T api node_modules/.bin/prisma migrate deploy

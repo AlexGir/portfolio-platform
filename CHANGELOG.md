@@ -6,6 +6,22 @@ this project follows [Semantic Versioning](https://semver.org/) once it reaches 
 
 ## [Unreleased]
 
+### Added — Infra & deployment (`infra/`) · PR #5
+
+- Production Docker Compose (`infra/compose.prod.yaml`): `caddy` (reverse proxy
+  - automatic TLS), `web`, `api`, `postgres` on one VPS.
+- Multi-stage Dockerfiles for `api` and `web` using `turbo prune` (Alpine,
+  non-root users; web ships Next's `standalone` output).
+- `infra/Caddyfile` for `alexandregiraud.tech` (+ `www`) and
+  `api.alexandregiraud.tech`, with automatic Let's Encrypt certificates.
+- CI: `docker-build` job actually builds both images on every PR; `deploy` job
+  (SSH, gated behind the `DEPLOY_ENABLED` repo variable and 3 secrets) rolls
+  the VPS forward and runs `prisma migrate deploy` after `verify` + `e2e` +
+  `docker-build` are green on `main`.
+- `docs/deployment.md` — full Hostinger runbook (VPS setup, DNS, first deploy,
+  secrets, backups).
+- Prisma: added the `linux-musl-openssl-3.0.x` binary target for Alpine.
+
 ### Added — Web (`apps/web`) · PR #4
 
 - Next.js (App Router) + React 19 + TypeScript + Tailwind CSS v4.
