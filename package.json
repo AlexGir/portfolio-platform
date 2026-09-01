@@ -1,0 +1,9 @@
+{
+  "name": "hello-pr-practice",
+  "version": "1.0.0",
+  "description": "A tiny project for practicing the pull request workflow.",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT"
+}
