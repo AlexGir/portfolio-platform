@@ -1,0 +1,13 @@
+# Reverse proxy + automatic TLS (Let's Encrypt) for the production stack.
+# Point both DNS records (A/AAAA) at the VPS before starting Caddy, or the
+# certificate requests will fail.
+
+alexandregiraud.tech, www.alexandregiraud.tech {
+	encode zstd gzip
+	reverse_proxy web:3000
+}
+
+api.alexandregiraud.tech {
+	encode zstd gzip
+	reverse_proxy api:4000
+}
