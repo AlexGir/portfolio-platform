@@ -21,7 +21,8 @@
       "dependsOn": ["^build", "db:generate"]
     },
     "test": {
-      "dependsOn": ["^build", "db:generate"]
+      "dependsOn": ["^build", "db:generate"],
+      "env": ["DATABASE_URL", "CI", "NODE_ENV"]
     }
   }
 }
