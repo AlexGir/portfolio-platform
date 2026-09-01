@@ -1,9 +1,31 @@
 {
-  "name": "hello-pr-practice",
-  "version": "1.0.0",
-  "description": "A tiny project for practicing the pull request workflow.",
-  "scripts": {
-    "test": "node --test"
+  "name": "portfolio-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal web platform: public portfolio + authenticated personal apps.",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
   },
-  "license": "MIT"
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md,yml,yaml}\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1"
+  }
 }
