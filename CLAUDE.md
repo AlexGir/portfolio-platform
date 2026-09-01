@@ -153,6 +153,8 @@ Cibler un package : `pnpm --filter @portfolio/shared test`.
 ### État d'avancement
 
 - [x] PR #2 — skeleton monorepo, `packages/shared`, tooling, CI
-- [ ] PR #3 — `apps/api` (Express, Prisma, health/users/auth, REST + GraphQL)
+- [x] PR #3 — `apps/api` (Express, Prisma, health/users/auth, REST + GraphQL)
 - [ ] PR #4 — `apps/web` (portfolio, dashboard protégé, login OAuth)
 - [ ] PR #5 — `infra/` (Docker Compose prod, déploiement Hostinger)
+
+Historique détaillé : [`CHANGELOG.md`](CHANGELOG.md).

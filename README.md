@@ -38,7 +38,7 @@ pnpm build
 ```
 apps/
   web/          Next.js — site public + dashboard privé      (PR #4)
-  api/          Express — REST + GraphQL + auth              (PR #3)
+  api/          Express — REST + GraphQL + OAuth2/JWT + Prisma
 packages/
   shared/       types + schémas Zod + constantes partagés
   tsconfig/     configs TypeScript de base
