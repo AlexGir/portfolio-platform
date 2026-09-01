@@ -9,10 +9,29 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  DATABASE_URL: postgresql://portfolio:portfolio@localhost:5432/portfolio_test?schema=public
+
 jobs:
   verify:
     name: typecheck · lint · test · build
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: portfolio
+          POSTGRES_PASSWORD: portfolio
+          POSTGRES_DB: portfolio_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U portfolio"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,6 +48,12 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @portfolio/api db:generate
+
+      - name: Apply migrations
+        run: pnpm --filter @portfolio/api db:migrate:deploy
 
       - name: Check formatting
         run: pnpm format:check

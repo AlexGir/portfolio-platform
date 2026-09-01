@@ -1,0 +1,67 @@
+// Prisma schema for the platform API.
+// Run `pnpm --filter @portfolio/api db:migrate` after editing.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+enum OAuthProvider {
+  github
+  google
+}
+
+/// An authenticated person. Created on first successful OAuth login.
+model User {
+  id            String         @id @default(uuid()) @db.Uuid
+  email         String         @unique
+  displayName   String
+  avatarUrl     String?
+  role          UserRole       @default(user)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  accounts      OAuthAccount[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+/// Link between a User and an external identity provider account.
+model OAuthAccount {
+  id                String        @id @default(uuid()) @db.Uuid
+  provider          OAuthProvider
+  /// The user id as known by the provider (GitHub id, Google `sub`).
+  providerAccountId String
+  userId            String        @db.Uuid
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime      @default(now())
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("oauth_accounts")
+}
+
+/// A refresh token, stored only as a SHA-256 hash. Rotated on every use:
+/// the consumed token is marked `revokedAt` and `replacedById` points to its successor.
+model RefreshToken {
+  id           String    @id @default(uuid()) @db.Uuid
+  tokenHash    String    @unique
+  userId       String    @db.Uuid
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  replacedById String?   @db.Uuid
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}

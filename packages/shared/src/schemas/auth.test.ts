@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   accessTokenPayloadSchema,
+  accessTokenResponseSchema,
   authTokensSchema,
   oauthProviderSchema,
   userRoleSchema,
@@ -72,5 +73,26 @@ describe('authTokensSchema', () => {
 describe('userRoleSchema', () => {
   it('exposes user and admin', () => {
     expect(userRoleSchema.options).toEqual(['user', 'admin']);
+  });
+});
+
+describe('accessTokenResponseSchema', () => {
+  it('accepts a body without a refresh token', () => {
+    const parsed = accessTokenResponseSchema.parse({
+      accessToken: 'header.payload.signature',
+      tokenType: 'Bearer',
+      expiresIn: 900,
+    });
+    expect(parsed).not.toHaveProperty('refreshToken');
+  });
+
+  it('strips an accidentally included refresh token', () => {
+    const parsed = accessTokenResponseSchema.parse({
+      accessToken: 'a.b.c',
+      tokenType: 'Bearer',
+      expiresIn: 900,
+      refreshToken: 'should-be-dropped',
+    });
+    expect(parsed).not.toHaveProperty('refreshToken');
   });
 });

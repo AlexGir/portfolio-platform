@@ -34,3 +34,14 @@ export const authTokensSchema = z.object({
   expiresIn: z.number().int().positive(),
 });
 export type AuthTokens = z.infer<typeof authTokensSchema>;
+
+/**
+ * Body returned by `POST /auth/refresh`. The refresh token itself is delivered
+ * as an `HttpOnly` cookie, never in the JSON body, so it is omitted here.
+ */
+export const accessTokenResponseSchema = authTokensSchema.pick({
+  accessToken: true,
+  tokenType: true,
+  expiresIn: true,
+});
+export type AccessTokenResponse = z.infer<typeof accessTokenResponseSchema>;
