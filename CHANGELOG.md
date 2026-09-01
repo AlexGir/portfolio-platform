@@ -6,6 +6,24 @@ this project follows [Semantic Versioning](https://semver.org/) once it reaches 
 
 ## [Unreleased]
 
+### Added — Web (`apps/web`) · PR #4
+
+- Next.js (App Router) + React 19 + TypeScript + Tailwind CSS v4.
+- Public portfolio: hero, about, expertise, work (projects), contact — content
+  lives in `src/content/*.ts`, edited independently of the UI.
+- Dark mode: pre-paint class script (no flash) + a persisted manual toggle.
+- Auth pages: `/login` (provider buttons → API), `/auth/callback` (exchanges
+  the refresh cookie for a session), `/dashboard` (client-guarded, empty state
+  for future personal apps).
+- `AuthProvider` — silent session restore on load, in-memory access token.
+- Accessibility: skip link, landmarks, labelled nav, focus-visible ring,
+  `prefers-reduced-motion` handling, `eslint-plugin-jsx-a11y`.
+- Tests: 15 unit tests (Vitest + Testing Library — content integrity, API
+  client, section rendering, theme toggle) and 7 Playwright e2e specs (landing
+  sections, CTA scroll, theme toggle, a11y landmarks, login links, dashboard
+  redirect) — both run locally and in CI.
+- CI: new `e2e` job (installs Chromium, builds + starts the app, runs Playwright).
+
 ### Added — API (`apps/api`) · PR #3
 
 - Express application factory (`createApp`) with a separate `listen` entrypoint and
