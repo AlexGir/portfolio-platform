@@ -156,5 +156,6 @@ Cibler un package : `pnpm --filter @portfolio/shared test`.
 - [x] PR #3 — `apps/api` (Express, Prisma, health/users/auth, REST + GraphQL)
 - [x] PR #4 — `apps/web` (portfolio, dashboard protégé, login OAuth)
 - [x] PR #5 — `infra/` (Docker Compose prod, déploiement Hostinger) — déploiement auto désactivé tant que les secrets ne sont pas configurés, voir `docs/deployment.md`
+- [x] PR #6 — refonte visuelle éditoriale + pages `/work/[slug]` (études de cas mockup à remplacer par du vrai contenu)
 
 Historique détaillé : [`CHANGELOG.md`](CHANGELOG.md).
