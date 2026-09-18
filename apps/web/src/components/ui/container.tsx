@@ -4,9 +4,13 @@ import type { ReactNode } from 'react';
 export function Container({
   children,
   className = '',
+  narrow = false,
 }: {
   children: ReactNode;
   className?: string;
+  /** Use the narrower reading-column width (long-form text). */
+  narrow?: boolean;
 }) {
-  return <div className={`mx-auto w-full max-w-5xl px-6 ${className}`}>{children}</div>;
+  const maxWidth = narrow ? 'max-w-3xl' : 'max-w-5xl';
+  return <div className={`mx-auto w-full ${maxWidth} px-6 ${className}`}>{children}</div>;
 }

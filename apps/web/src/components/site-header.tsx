@@ -6,11 +6,11 @@ import { Container } from './ui/container';
 import { ThemeToggle } from './theme-toggle';
 
 const NAV = [
-  { href: '#about', label: 'À propos' },
-  { href: '#expertise', label: 'Expertise' },
-  { href: '#work', label: 'Projets' },
-  { href: '#contact', label: 'Contact' },
-];
+  { href: '/#about', label: 'À propos' },
+  { href: '/#expertise', label: 'Expertise' },
+  { href: '/#work', label: 'Projets' },
+  { href: '/#contact', label: 'Contact' },
+] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -18,23 +18,23 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur">
       <Container className="flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="font-semibold tracking-tight">
-          alex<span className="text-accent">.dev</span>
+        <Link href="/" className="font-display text-lg tracking-tight">
+          alex<span className="italic text-accent">.dev</span>
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden items-center gap-6 sm:flex">
           {NAV.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="text-sm text-muted transition-colors hover:text-fg"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
           <Link
             href="/login"
-            className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
+            className="rounded-full bg-accent px-3 py-1.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
           >
             Espace
           </Link>
@@ -64,14 +64,14 @@ export function SiteHeader() {
         >
           <Container className="flex flex-col py-2">
             {NAV.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className="py-2 text-sm text-muted hover:text-fg"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <Link
               href="/login"

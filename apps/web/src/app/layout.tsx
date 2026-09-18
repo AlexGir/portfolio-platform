@@ -1,9 +1,24 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { Fraunces, Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeScript } from '@/components/theme-script';
 import { AuthProvider } from '@/lib/auth-context';
 import { profile } from '@/content/profile';
+
+const sans = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const display = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  axes: ['opsz', 'SOFT', 'WONK'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -20,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning className={`${sans.variable} ${display.variable}`}>
       <head>
         <ThemeScript />
       </head>

@@ -3,7 +3,7 @@ import { SiteFooter } from '@/components/site-footer';
 import { Hero } from '@/components/sections/hero';
 import { About } from '@/components/sections/about';
 import { Expertise } from '@/components/sections/expertise';
-import { Work } from '@/components/sections/work';
+import { WorkPreview } from '@/components/sections/work-preview';
 import { Contact } from '@/components/sections/contact';
 
 export default function HomePage() {
@@ -14,7 +14,7 @@ export default function HomePage() {
         <Hero />
         <About />
         <Expertise />
-        <Work />
+        <WorkPreview />
         <Contact />
       </main>
       <SiteFooter />

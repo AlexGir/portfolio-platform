@@ -12,7 +12,7 @@ test.describe('portfolio landing', () => {
 
   test('primary CTA jumps to the projects section', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: 'Voir les projets' }).click();
+    await page.getByRole('link', { name: 'Voir mes projets' }).click();
     await expect(page).toHaveURL(/#work$/);
     await expect(page.getByRole('heading', { level: 2, name: 'Projets' })).toBeInViewport();
   });
