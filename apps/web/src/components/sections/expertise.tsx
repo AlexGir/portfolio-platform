@@ -5,13 +5,14 @@ export function Expertise() {
   return (
     <Section
       id="expertise"
+      eyebrow="Ce que je fais"
       title="Expertise"
       lead="Ce sur quoi j'interviens concrètement, du cadrage à la mise en production."
     >
       <ul className="grid gap-6 sm:grid-cols-2">
         {expertiseAreas.map((area) => (
           <li key={area.title} className="rounded-lg border border-border bg-surface p-5">
-            <h3 className="font-medium">{area.title}</h3>
+            <h3 className="font-display text-lg">{area.title}</h3>
             <p className="mt-1 text-sm text-muted">{area.summary}</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {area.skills.map((skill) => (

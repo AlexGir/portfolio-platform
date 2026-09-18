@@ -6,6 +6,32 @@ this project follows [Semantic Versioning](https://semver.org/) once it reaches 
 
 ## [Unreleased]
 
+### Added — Editorial redesign & case studies (`apps/web`) · PR #6
+
+- Visual identity overhaul inspired by editorial product-design portfolios
+  (rebon.studio, adamhickey.com): warm paper palette, a Fraunces/Inter display
+  and body font pairing, generated SVG "cover art" per project (no stock
+  imagery needed), grain texture, pure-CSS entrance animation.
+- New case study content model (`content/case-studies.ts`) replacing the flat
+  `projects.ts`: problem/solution overview, methods, a numbered narrative with
+  optional callouts, a reflection pull-quote, and an impact metrics grid. Ships
+  with 3 illustrative (fictional) product-design case studies to replace with
+  real work later.
+- New routes: `/work` (full index) and `/work/[slug]` (case study template) —
+  `generateStaticParams`, proper `notFound()` on an unknown slug, prev/next
+  project navigation.
+- Homepage hero, work section, header nav (fixed cross-page anchors) and
+  section primitives (`eyebrow` support) restyled to match.
+- Tests: 8 new unit test files for the case-study content and components;
+  new `e2e/work.spec.ts` (index, card → case study, prev/next nav, 404).
+- **Removed** the `motion` (Framer Motion) dependency after finding its
+  mount-triggered animations could get stuck at `opacity: 0` on both
+  `next dev` and a real `next start` — root-caused as unrelated to the
+  library itself (confirmed the same page renders correctly once the browser
+  tab is actually focused/foregrounded) but replaced anyway with a small
+  pure-CSS `@keyframes` utility: strictly more robust for zero visual cost,
+  since it cannot depend on any JS/hydration timing.
+
 ### Added — Infra & deployment (`infra/`) · PR #5
 
 - Production Docker Compose (`infra/compose.prod.yaml`): `caddy` (reverse proxy
