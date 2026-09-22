@@ -65,19 +65,21 @@ Vérifier : `https://alexandregiraud.tech` (portfolio) et
 
 ## 4. Déploiements suivants (automatiques via CI)
 
-`.github/workflows/ci.yml` contient un job `deploy` qui, sur `main`, une fois
-`verify` et `e2e` verts, se connecte en SSH et relance la stack :
+**Actif depuis le 2026-09-22.** `.github/workflows/ci.yml` contient un job
+`deploy` qui, sur `main`, une fois `verify`, `e2e` et `docker-build` verts, se
+connecte en SSH et relance la stack :
 
 ```bash
-cd /opt/portfolio-platform && git pull
+cd /opt/portfolio-platform
+git fetch origin main && git reset --hard origin/main
 docker compose -f infra/compose.prod.yaml up -d --build
 docker compose -f infra/compose.prod.yaml exec -T api node_modules/.bin/prisma migrate deploy
 ```
 
-Le job est **désactivé par défaut** (variable de repo `DEPLOY_ENABLED`) tant
-que les secrets ci-dessous ne sont pas configurés.
+Le job ne s'exécute que si la variable de repo `DEPLOY_ENABLED` vaut `true`
+et que les 3 secrets ci-dessous sont configurés — c'est le cas.
 
-### Secrets et variable à configurer (dans le repo GitHub)
+### Secrets et variable configurés (dans le repo GitHub)
 
 ```bash
 gh secret set HOSTINGER_HOST --body "<ip-ou-domaine-du-vps>"
