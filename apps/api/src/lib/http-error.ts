@@ -32,3 +32,8 @@ export const notFound = (message = 'Not found'): HttpError =>
 
 export const conflict = (message = 'Conflict'): HttpError =>
   new HttpError(409, 'conflict', message);
+
+export const serviceUnavailable = (
+  message = 'Service unavailable',
+  code = 'unavailable',
+): HttpError => new HttpError(503, code, message);

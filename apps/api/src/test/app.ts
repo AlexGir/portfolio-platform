@@ -4,6 +4,7 @@ import type { AppConfig } from '../config/env.js';
 import { createApp } from '../app.js';
 import { fakeOAuthRegistry } from './fake-oauth.js';
 import type { OAuthRegistry } from '../modules/auth/oauth-provider.js';
+import type { Mailer } from '../modules/contact/contact.service.js';
 
 /** A complete, frozen config for integration tests. */
 export function testConfig(overrides: Partial<AppConfig> = {}): AppConfig {
@@ -29,13 +30,21 @@ export interface IntegrationAppOptions {
   prisma: PrismaClient;
   oauth?: OAuthRegistry;
   config?: Partial<AppConfig>;
+  /** `null` exercises the "contact form not configured" path. */
+  mailer?: Mailer | null;
 }
 
-export function createIntegrationApp({ prisma, oauth, config }: IntegrationAppOptions): Express {
+export function createIntegrationApp({
+  prisma,
+  oauth,
+  config,
+  mailer,
+}: IntegrationAppOptions): Express {
   return createApp({
     config: testConfig(config),
     prisma,
     oauth: oauth ?? fakeOAuthRegistry(),
     version: 'test',
+    ...(mailer !== undefined ? { mailer } : {}),
   });
 }

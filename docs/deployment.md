@@ -93,7 +93,45 @@ ajoute la **publique** dans `~/.ssh/authorized_keys` sur le VPS, et donne la
 **privée** à `HOSTINGER_SSH_KEY` — jamais l'inverse, et jamais ta clé
 personnelle.
 
-## 5. Sauvegardes
+## 5. Formulaire de contact (Resend)
+
+Le formulaire de la section Contact envoie un mail via l'API Resend. Tant que
+les trois variables ci-dessous ne sont pas renseignées, `POST /contact` répond
+**503** et le formulaire web affiche un repli vers l'adresse e-mail directe —
+le reste de l'API n'est pas affecté.
+
+1. Créer un compte sur [resend.com](https://resend.com) (offre gratuite :
+   3 000 mails/mois).
+2. Ajouter le domaine `alexandregiraud.tech` et créer les enregistrements DNS
+   que Resend indique (un `MX` et deux `TXT` : SPF et DKIM) chez le registrar.
+   Attendre que le domaine passe en « Verified ».
+3. Créer une clé API (droit d'envoi uniquement).
+4. Renseigner dans `/opt/portfolio-platform/infra/.env` :
+
+```bash
+RESEND_API_KEY=re_...
+CONTACT_FROM_EMAIL=contact@alexandregiraud.tech
+CONTACT_TO_EMAIL=alexandre.giraud1995@gmail.com
+```
+
+5. Redémarrer l'API : `docker compose -f infra/compose.prod.yaml up -d api`
+
+`CONTACT_FROM_EMAIL` **doit** être sur le domaine vérifié. L'adresse du
+visiteur part en `reply_to`, jamais en expéditeur : envoyer au nom d'un domaine
+qu'on ne contrôle pas ferait échouer SPF/DKIM et finirait en spam.
+
+Vérifier une fois en production :
+
+```bash
+curl -i -X POST https://api.alexandregiraud.tech/contact \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Test","email":"moi@example.com","message":"Message de test du formulaire de contact."}'
+```
+
+Réponse attendue : `202` avec `{"status":"sent"}`, et le mail dans la boîte de
+réception. Le point d'entrée est limité à **5 messages par heure et par IP**.
+
+## 6. Sauvegardes
 
 `postgres-data` est un volume Docker nommé — inclure `docker run --rm -v
 portfolio-prod_postgres-data:/data -v $PWD:/backup alpine tar czf

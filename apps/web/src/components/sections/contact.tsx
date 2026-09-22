@@ -1,27 +1,54 @@
 import { Section } from '../ui/section';
+import { ContactForm } from './contact-form';
 import { profile } from '@/content/profile';
 
 export function Contact() {
   return (
     <Section id="contact" eyebrow="Prochaine étape" title="Contact" lead={profile.availability}>
-      <div className="flex flex-wrap items-center gap-4">
-        <a
-          href={`mailto:${profile.email}`}
-          className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
-        >
-          {profile.email}
-        </a>
-        {profile.socials.map((social) => (
-          <a
-            key={social.href}
-            href={social.href}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface"
-          >
-            {social.label}
-          </a>
-        ))}
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_16rem]">
+        <ContactForm />
+
+        <aside className="space-y-6">
+          <div>
+            <p className="eyebrow text-muted">Direct</p>
+            <a
+              href={`mailto:${profile.email}`}
+              className="mt-2 block break-words text-sm transition-colors hover:text-accent-text dark:hover:text-accent"
+            >
+              {profile.email}
+            </a>
+          </div>
+
+          <div>
+            <p className="eyebrow text-muted">Ailleurs</p>
+            <ul className="mt-2 space-y-1.5">
+              {profile.socials.map((social) => (
+                <li key={social.href}>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm transition-colors hover:text-accent-text dark:hover:text-accent"
+                  >
+                    {social.label} ↗
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="eyebrow text-muted">CV</p>
+            <a
+              href={profile.resume.href}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 block text-sm transition-colors hover:text-accent-text dark:hover:text-accent"
+            >
+              PDF · mis à jour {profile.resume.updated} ↗
+            </a>
+          </div>
+        </aside>
       </div>
     </Section>
   );
