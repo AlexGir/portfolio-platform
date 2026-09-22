@@ -156,6 +156,9 @@ Cibler un package : `pnpm --filter @portfolio/shared test`.
 - [x] PR #3 — `apps/api` (Express, Prisma, health/users/auth, REST + GraphQL)
 - [x] PR #4 — `apps/web` (portfolio, dashboard protégé, login OAuth)
 - [x] PR #5 — `infra/` (Docker Compose prod, déploiement Hostinger) — déploiement auto désactivé tant que les secrets ne sont pas configurés, voir `docs/deployment.md`
-- [x] PR #6 — refonte visuelle éditoriale + pages `/work/[slug]` (études de cas mockup à remplacer par du vrai contenu)
+- [x] PR #6 — refonte visuelle éditoriale + pages `/work/[slug]`
+- [x] PR #7 — intégration au Traefik existant du VPS, mise en production
+- [x] PR #8 — contenu réel Product Designer : 4 études de cas, 15 planches de
+      design embarquées (`public/planches`), CV téléchargeable, login masqué
 
 Historique détaillé : [`CHANGELOG.md`](CHANGELOG.md).

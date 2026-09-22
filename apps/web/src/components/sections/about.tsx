@@ -7,11 +7,16 @@ export function About() {
       id="about"
       eyebrow="Profil"
       title="À propos"
-      lead="Un profil hybride, entre ingénierie et design produit."
+      lead="Product Designer d'abord, avec un bagage technique qui change la façon dont je conçois."
     >
-      <div className="max-w-2xl space-y-4 font-display text-lg leading-relaxed text-fg/90 sm:text-xl">
+      <div className="reveal-group max-w-3xl">
         {profile.bio.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
+          <p
+            key={index}
+            className="border-t border-border py-5 font-display text-lg leading-[1.55] text-fg/90 first:border-t-0 first:pt-0 sm:text-xl"
+          >
+            {paragraph}
+          </p>
         ))}
       </div>
     </Section>

@@ -1,5 +1,17 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { caseStudies, getCaseStudy } from './case-studies';
+import type { Board } from './case-studies';
+
+const PUBLIC_DIR = join(import.meta.dirname, '../../public');
+
+function allBoards(): Board[] {
+  return caseStudies.flatMap((study) => [
+    ...(study.approachBoards ?? []),
+    ...study.steps.flatMap((step) => step.boards ?? []),
+  ]);
+}
 
 describe('case studies content', () => {
   it('has unique, url-safe slugs', () => {
@@ -47,6 +59,44 @@ describe('case studies content', () => {
     for (const study of caseStudies) {
       expect(study.cover.primary).toMatch(hex);
       expect(study.cover.secondary).toMatch(hex);
+    }
+  });
+
+  it('ships both the HTML board and its rendered preview for every embed', () => {
+    const boards = allBoards();
+    expect(boards.length).toBeGreaterThan(0);
+
+    for (const board of boards) {
+      expect(board.src).toMatch(/^\/planches\/[a-z0-9/-]+\.html$/);
+      expect(existsSync(join(PUBLIC_DIR, board.src)), `missing board: ${board.src}`).toBe(true);
+
+      // Rendered by `pnpm --filter @portfolio/web boards:capture`; without it
+      // the case study would show a broken image.
+      const preview = board.src.replace(/\.html$/, '.png');
+      expect(existsSync(join(PUBLIC_DIR, preview)), `missing preview: ${preview}`).toBe(true);
+
+      expect(board.title).not.toBe('');
+      expect(board.caption.length).toBeGreaterThan(20);
+    }
+  });
+
+  it('never embeds the same board twice', () => {
+    const sources = allBoards().map((board) => board.src);
+    expect(new Set(sources).size).toBe(sources.length);
+  });
+
+  it('gives every decision table rows that match its headers', () => {
+    for (const study of caseStudies) {
+      for (const step of study.steps) {
+        if (!step.table) continue;
+        expect(step.table.headers.length).toBeGreaterThan(1);
+        for (const row of step.table.rows) {
+          expect(row).toHaveLength(step.table.headers.length);
+        }
+        if (step.table.chosenRow !== undefined) {
+          expect(step.table.rows[step.table.chosenRow]).toBeDefined();
+        }
+      }
     }
   });
 

@@ -8,7 +8,17 @@ export function SiteFooter() {
         <p>
           © {new Date().getFullYear()} {profile.name}
         </p>
-        <ul className="flex gap-4">
+        <ul className="flex flex-wrap gap-4">
+          <li>
+            <a
+              href={profile.resume.href}
+              className="hover:text-fg"
+              target="_blank"
+              rel="noreferrer"
+            >
+              CV
+            </a>
+          </li>
           {profile.socials.map((social) => (
             <li key={social.href}>
               <a href={social.href} className="hover:text-fg" rel="me noreferrer" target="_blank">

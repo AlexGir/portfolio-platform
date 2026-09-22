@@ -3,7 +3,7 @@ import { Container } from './container';
 
 interface SectionProps {
   id: string;
-  /** Small uppercase label above the title, e.g. "EXPERTISE". */
+  /** Small monospaced label above the title, e.g. "EXPERTISE". */
   eyebrow?: string;
   /** Visible section title. */
   title: string;
@@ -12,24 +12,39 @@ interface SectionProps {
   children: ReactNode;
 }
 
-/** A page section with a consistent heading block and scroll anchor. */
+/**
+ * A page section with a consistent heading block and scroll anchor.
+ *
+ * The heading sits in a two-column editorial grid on wide screens — label in
+ * the margin, title and lead in the measure — and stacks below `lg`. The heavy
+ * top rule is the layout's main structural device.
+ */
 export function Section({ id, eyebrow, title, lead, children }: SectionProps) {
   return (
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className="scroll-mt-20 border-t border-border py-16 sm:py-24"
+      className="rule-strong scroll-mt-20 py-16 sm:py-24"
     >
       <Container>
-        {eyebrow ? <p className="eyebrow text-accent">{eyebrow}</p> : null}
-        <h2
-          id={`${id}-title`}
-          className={`font-display text-3xl tracking-tight sm:text-4xl ${eyebrow ? 'mt-3' : ''}`}
-        >
-          {title}
-        </h2>
-        {lead ? <p className="mt-3 max-w-2xl text-muted">{lead}</p> : null}
-        <div className="mt-10">{children}</div>
+        <div className="grid gap-x-10 gap-y-4 lg:grid-cols-[10rem_minmax(0,1fr)]">
+          {eyebrow ? (
+            <p className="eyebrow pt-2 text-accent-text lg:text-right dark:text-accent">
+              {eyebrow}
+            </p>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+
+          <div className="reveal">
+            <h2 id={`${id}-title`} className="display-lg font-display">
+              {title}
+            </h2>
+            {lead ? <p className="mt-4 max-w-2xl text-muted sm:text-lg">{lead}</p> : null}
+          </div>
+        </div>
+
+        <div className="mt-14 lg:pl-[13.5rem]">{children}</div>
       </Container>
     </section>
   );

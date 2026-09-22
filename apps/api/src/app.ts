@@ -14,13 +14,29 @@ import { AuthService } from './modules/auth/auth.service.js';
 import { authRouter } from './modules/auth/auth.router.js';
 import type { OAuthRegistry } from './modules/auth/oauth-provider.js';
 import { usersRouter } from './modules/users/users.router.js';
+import { contactRouter } from './modules/contact/contact.router.js';
+import { createResendMailer, type Mailer } from './modules/contact/contact.service.js';
 import { createGraphQLHandler, GRAPHQL_ENDPOINT } from './graphql/yoga.js';
+
+/** Builds the mail transport, or null when the contact form is not configured. */
+function resolveMailer(config: AppConfig): Mailer | null {
+  if (!config.RESEND_API_KEY || !config.CONTACT_FROM_EMAIL || !config.CONTACT_TO_EMAIL) {
+    return null;
+  }
+  return createResendMailer({
+    apiKey: config.RESEND_API_KEY,
+    from: config.CONTACT_FROM_EMAIL,
+    to: config.CONTACT_TO_EMAIL,
+  });
+}
 
 export interface AppDependencies {
   config: AppConfig;
   prisma: PrismaClient;
   oauth: OAuthRegistry;
   logger?: Logger;
+  /** Overrides the config-derived mail transport (tests). */
+  mailer?: Mailer | null;
   /** Version string surfaced by `/health`; defaults to `0.0.0`. */
   version?: string;
   /** Injectable clock, forwarded to the auth service (tests). */
@@ -89,6 +105,19 @@ export function createApp(deps: AppDependencies): Express {
     }),
   );
   app.use(usersRouter({ prisma, accessSecret: config.JWT_ACCESS_SECRET }));
+
+  // Tighter than /auth: a portfolio inbox has no legitimate reason to receive
+  // more than a handful of messages an hour from one address.
+  app.use(
+    rateLimit({
+      windowMs: 60 * 60 * 1000,
+      limit: 5,
+      standardHeaders: 'draft-7',
+      legacyHeaders: false,
+      skip: (req) => req.method !== 'POST' || req.path !== '/contact',
+    }),
+    contactRouter({ mailer: deps.mailer !== undefined ? deps.mailer : resolveMailer(config) }),
+  );
 
   app.use(notFoundHandler);
   app.use(errorHandler(logger));

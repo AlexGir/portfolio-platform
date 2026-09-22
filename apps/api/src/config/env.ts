@@ -19,6 +19,16 @@ const envSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string().min(1),
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
+  /*
+   * Contact form (Resend). Optional on purpose, unlike everything above: the
+   * API is already in production, and making these required would take the
+   * whole service down — auth included — the moment it is deployed before the
+   * Resend account exists. When they are absent, `POST /contact` answers 503
+   * and the web form falls back to a plain mailto link.
+   */
+  RESEND_API_KEY: z.string().min(1).optional(),
+  CONTACT_FROM_EMAIL: z.string().email().optional(),
+  CONTACT_TO_EMAIL: z.string().email().optional(),
 });
 
 export type AppConfig = Readonly<

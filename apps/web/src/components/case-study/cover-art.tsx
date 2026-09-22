@@ -49,6 +49,27 @@ export function CoverArt({ cover, className = '' }: { cover: CoverTone; classNam
         </g>
       ) : null}
 
+      {cover.variant === 'signal' ? (
+        <g>
+          {Array.from({ length: 22 }).map((_, i) => {
+            // Deterministic pseudo-random bar heights — a measurement motif.
+            const height = 30 + Math.abs(Math.sin(i * 1.7)) * 150;
+            return (
+              <rect
+                key={i}
+                x={14 + i * 17}
+                y={(300 - height) / 2}
+                width="9"
+                height={height}
+                rx="4.5"
+                fill={i % 3 === 0 ? cover.secondary : cover.primary}
+                opacity={i % 3 === 0 ? 0.4 : 0.25}
+              />
+            );
+          })}
+        </g>
+      ) : null}
+
       {cover.variant === 'grid' ? (
         <g>
           {Array.from({ length: 6 }).map((_, row) =>

@@ -5,43 +5,59 @@ import { CoverArt } from './cover-art';
 /** A case study entry on the homepage preview and the `/work` index. */
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
-    <li>
+    <li className="group border-t border-border first:border-t-0">
       <Link
         href={`/work/${study.slug}`}
-        className="group grid gap-6 rounded-xl border border-border p-4 transition-colors hover:bg-surface sm:grid-cols-[minmax(0,220px)_1fr] sm:items-center sm:p-6"
+        className="grid gap-6 py-8 transition-colors sm:grid-cols-[minmax(0,17rem)_1fr] sm:items-start sm:gap-10"
       >
-        <div className="grain aspect-[4/3] overflow-hidden rounded-lg border border-border">
-          <CoverArt
-            cover={study.cover}
-            className="h-full w-full scale-100 transition-transform duration-500 ease-out group-hover:scale-[1.06]"
-          />
+        <div className="grain aspect-[16/10] overflow-hidden rounded-sm border border-border bg-surface">
+          {study.coverImage ? (
+            <img
+              src={study.coverImage}
+              alt=""
+              width={1800}
+              height={1069}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          ) : (
+            <CoverArt
+              cover={study.cover}
+              className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          )}
         </div>
 
-        <div>
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <p className="eyebrow text-muted">{study.sector}</p>
-            <span className="text-sm text-muted">{study.year}</span>
+            <span className="eyebrow text-muted">{study.year}</span>
           </div>
 
-          <h3 className="mt-2 font-display text-xl leading-snug sm:text-2xl">{study.title}</h3>
-          <p className="mt-2 max-w-xl text-sm text-muted">{study.summary}</p>
+          <h3 className="display-md mt-3 font-display">
+            <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 ease-out group-hover:bg-[length:100%_1px]">
+              {study.title}
+            </span>
+          </h3>
 
-          <ul className="mt-4 flex flex-wrap gap-2">
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
+            {study.summary}
+          </p>
+
+          <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-1">
             {study.tags.map((tag) => (
-              <li
-                key={tag}
-                className="rounded-full border border-border px-2.5 py-0.5 text-xs text-fg/80"
-              >
+              <li key={tag} className="eyebrow text-muted">
                 {tag}
               </li>
             ))}
           </ul>
 
-          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+          <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-text dark:text-accent">
             Lire l&apos;étude de cas
             <span
               aria-hidden="true"
-              className="inline-block transition-transform duration-300 group-hover:translate-x-1"
+              className="inline-block transition-transform duration-300 group-hover:translate-x-1.5"
             >
               →
             </span>

@@ -12,7 +12,7 @@ test.describe('portfolio landing', () => {
 
   test('primary CTA jumps to the projects section', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: 'Voir mes projets' }).click();
+    await page.getByRole('link', { name: 'Voir mes études de cas' }).click();
     await expect(page).toHaveURL(/#work$/);
     await expect(page.getByRole('heading', { level: 2, name: 'Projets' })).toBeInViewport();
   });
@@ -26,6 +26,16 @@ test.describe('portfolio landing', () => {
       .first()
       .click();
     await expect(html).toHaveClass(/dark/);
+  });
+
+  test('exposes the CV as a downloadable PDF', async ({ page }) => {
+    await page.goto('/');
+    const cv = page.getByRole('link', { name: /Voir mon CV/ }).first();
+    await expect(cv).toHaveAttribute('href', '/cv-alexandre-giraud-product-designer.pdf');
+
+    const response = await page.request.get('/cv-alexandre-giraud-product-designer.pdf');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain('pdf');
   });
 
   test('has no obvious accessibility landmarks missing', async ({ page }) => {

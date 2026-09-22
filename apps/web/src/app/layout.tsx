@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { Fraunces, Inter } from 'next/font/google';
+import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeScript } from '@/components/theme-script';
 import { AuthProvider } from '@/lib/auth-context';
@@ -20,6 +20,14 @@ const display = Fraunces({
   display: 'swap',
 });
 
+/** Labels, numerals and metadata — the "system annotation" voice of the layout. */
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains-mono',
+  weight: ['400', '500'],
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: {
     default: `${profile.name} — ${profile.role}`,
@@ -35,7 +43,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning className={`${sans.variable} ${display.variable}`}>
+    <html
+      lang="fr"
+      suppressHydrationWarning
+      className={`${sans.variable} ${display.variable} ${mono.variable}`}
+    >
       <head>
         <ThemeScript />
       </head>

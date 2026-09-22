@@ -4,12 +4,12 @@ import { notFound } from 'next/navigation';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { Container } from '@/components/ui/container';
-import { CoverArt } from '@/components/case-study/cover-art';
 import { MetaGrid } from '@/components/case-study/meta-grid';
 import { ProcessStep } from '@/components/case-study/process-step';
 import { ReflectionCallout } from '@/components/case-study/reflection-callout';
 import { ImpactGrid } from '@/components/case-study/impact-grid';
 import { CaseStudyNav } from '@/components/case-study/case-study-nav';
+import { BoardGallery } from '@/components/case-study/board-figure';
 import { caseStudies, getCaseStudy } from '@/content/case-studies';
 
 type Params = Promise<{ slug: string }>;
@@ -39,33 +39,38 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
       <SiteHeader />
       <main id="content">
         <article>
-          <header className="grain relative overflow-hidden border-b border-border">
-            <CoverArt
-              cover={study.cover}
-              className="pointer-events-none absolute inset-0 -z-10 h-full w-full opacity-60 dark:opacity-30"
+          <header className="grain relative overflow-hidden border-b-2 border-rule">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-48 -right-40 -z-10 h-[38rem] w-[38rem] rounded-full bg-accent opacity-[0.13] blur-3xl dark:opacity-25"
             />
-            <Container className="py-16 sm:py-24">
-              <Link href="/work" className="text-sm text-muted hover:text-fg">
+            <Container className="py-14 sm:py-20">
+              <Link href="/work" className="eyebrow text-muted transition-colors hover:text-fg">
                 ← Tous les projets
               </Link>
 
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-2">
-                <p className="eyebrow text-accent">{study.sector}</p>
-                <p className="text-sm text-muted">
+              <div className="mt-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                <p className="eyebrow text-accent-text dark:text-accent">{study.sector}</p>
+                <p className="eyebrow text-muted">
                   {study.year} · {study.readingTime} de lecture
                 </p>
               </div>
 
-              <h1 className="mt-4 max-w-3xl font-display text-3xl leading-tight tracking-tight sm:text-5xl">
+              <h1 className="display-lg animate-fade-up mt-5 max-w-4xl font-display">
                 {study.title}
               </h1>
-              <p className="mt-4 max-w-2xl text-lg text-muted">{study.summary}</p>
+              <p
+                className="animate-fade-up mt-6 max-w-2xl text-muted sm:text-lg"
+                style={{ animationDelay: '100ms' }}
+              >
+                {study.summary}
+              </p>
 
-              <ul className="mt-6 flex flex-wrap gap-2">
+              <ul className="mt-9 flex flex-wrap gap-x-3 gap-y-2">
                 {study.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="rounded-full border border-border bg-bg/70 px-3 py-1 text-xs text-fg/80 backdrop-blur"
+                    className="border border-border px-2.5 py-1 font-mono text-[0.6875rem] tracking-wide text-fg/75"
                   >
                     {tag}
                   </li>
@@ -77,18 +82,18 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
           <Container className="py-14 sm:py-20">
             <MetaGrid meta={study.meta} />
 
-            <div className="mt-14 grid gap-10 sm:grid-cols-2">
+            <div className="reveal-group mt-20 grid gap-x-12 gap-y-10 lg:grid-cols-2">
               <div>
-                <h2 className="font-display text-xl sm:text-2xl">Le problème</h2>
-                <div className="mt-3 space-y-3 text-fg/85">
+                <h2 className="eyebrow text-accent-text dark:text-accent">Le problème</h2>
+                <div className="mt-5 space-y-4 leading-relaxed text-fg/85">
                   {study.overview.problem.map((p, i) => (
                     <p key={i}>{p}</p>
                   ))}
                 </div>
               </div>
               <div>
-                <h2 className="font-display text-xl sm:text-2xl">La solution</h2>
-                <div className="mt-3 space-y-3 text-fg/85">
+                <h2 className="eyebrow text-accent-text dark:text-accent">La solution</h2>
+                <div className="mt-5 space-y-4 leading-relaxed text-fg/85">
                   {study.overview.solution.map((p, i) => (
                     <p key={i}>{p}</p>
                   ))}
@@ -96,39 +101,43 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
               </div>
             </div>
 
-            <div className="mt-16 border-t border-border pt-14">
-              <p className="eyebrow text-accent">Démarche</p>
-              <p className="mt-3 max-w-2xl font-display text-xl sm:text-2xl">
-                {study.approachIntro}
-              </p>
-              <ul className="mt-5 flex flex-wrap gap-2">
+            <div className="rule-strong mt-20 pt-12">
+              <p className="eyebrow text-accent-text dark:text-accent">Démarche</p>
+              <p className="display-md reveal mt-5 max-w-3xl font-display">{study.approachIntro}</p>
+              <ul className="mt-8 flex flex-wrap gap-x-3 gap-y-2">
                 {study.methods.map((method) => (
                   <li
                     key={method}
-                    className="rounded-full border border-border px-3 py-1 text-xs text-muted"
+                    className="border border-border px-2.5 py-1 font-mono text-[0.6875rem] tracking-wide text-muted"
                   >
                     {method}
                   </li>
                 ))}
               </ul>
 
-              <ol className="mt-4 divide-y divide-border">
+              {study.approachBoards ? (
+                <div className="mt-12">
+                  <BoardGallery boards={study.approachBoards} note />
+                </div>
+              ) : null}
+
+              <ol className="mt-12">
                 {study.steps.map((step) => (
                   <ProcessStep key={step.index} step={step} />
                 ))}
               </ol>
             </div>
 
-            <div className="mt-4 border-t border-border pt-14">
+            <div className="rule-strong mt-8 pt-14">
               <ReflectionCallout label={study.reflection.label} text={study.reflection.text} />
             </div>
 
-            <div className="mt-14 border-t border-border pt-14">
-              <h2 className="font-display text-xl sm:text-2xl">Résultats</h2>
-              <div className="mt-6">
+            <div className="rule-strong mt-20 pt-12">
+              <h2 className="eyebrow text-accent-text dark:text-accent">Résultats</h2>
+              <div className="mt-8">
                 <ImpactGrid impact={study.impact} />
               </div>
-              <p className="mt-6 max-w-2xl text-fg/85">{study.closing}</p>
+              <p className="mt-10 max-w-2xl leading-relaxed text-fg/85">{study.closing}</p>
             </div>
 
             <div className="mt-16">

@@ -6,6 +6,101 @@ this project follows [Semantic Versioning](https://semver.org/) once it reaches 
 
 ## [Unreleased]
 
+### Changed — Bolder editorial identity (`apps/web`)
+
+- New palette and type system in `globals.css`: warm paper `#f7f4ed`, near-black
+  `#121212`, one saturated red, JetBrains Mono for labels and numerals alongside
+  Fraunces/Inter. Heavy 2px rules and a visible column grid replace the previous
+  soft cards and pills.
+- The red is **three tokens, not one**: `--color-accent` (display only),
+  `--color-accent-strong` (solid surfaces, 4.84:1 with white) and
+  `--color-accent-text` (small text on paper, 5.18:1). A single `#e8442a` gives
+  only 3.97:1 behind white text — below AA. Same role-based reasoning as the
+  SKALES palette in the design-system case study.
+- Hero, section headings, expertise, case-study header, process steps, decision
+  tables, metrics and the work index restyled around that system.
+
+### Added — Scroll-triggered reveals, without a JS animation library
+
+- A `.reveal` / `.reveal-group` utility built on CSS `animation-timeline: view()`,
+  gated behind `@supports` and `prefers-reduced-motion`. It is compositor-driven:
+  no observer, no hydration step, nothing to get stuck — the failure mode that
+  got framer-motion removed in PR #6. Unsupported browsers render the final state.
+- The range ends inside `entry`, never in `cover`: a `cover`-based range strands
+  elements near the bottom of a page at partial opacity, because the document
+  cannot scroll far enough to complete them. Verified against real layout that
+  every revealed element reaches full progress at maximum scroll.
+- Tall containers reveal their heading rather than themselves, so a case-study
+  step containing a design board does not fade in over its whole height.
+
+### Changed — Project cards use the real design boards
+
+- `CaseStudy.coverImage` points a card at an actual deliverable (personas,
+  design-system foundations, mobile matchmaking) instead of the generated SVG
+  cover art, which now only backs the one case study without boards.
+
+### Added — Contact form (`apps/api` + `apps/web`)
+
+- `POST /contact`: Zod-validated, rate-limited to 5/hour/IP, with a honeypot
+  field that gets the same `202` a human does — a `400` would tell a bot it was
+  detected.
+- Resend transport over its REST API (no SDK — the same hand-rolled approach as
+  the OAuth providers). The visitor's address goes in `reply_to`, never `from`,
+  so SPF/DKIM pass. HTML is escaped.
+- **The three Resend variables are optional**, unlike every other entry in the
+  env schema: the API is already in production, and making them required would
+  take the whole service down — auth included — on the first deploy before the
+  Resend account exists. Missing config answers 503 and the form falls back to a
+  mailto link. Setup steps in `docs/deployment.md`.
+- The form validates with the shared schema before the round trip, and has
+  explicit loading, per-field error, transport-failure and success states.
+- Tests: 8 API tests (transport, escaping, honeypot, 503, failure) and 5 form
+  tests (submit, validation, 503 fallback, rate limit, honeypot hidden).
+
+### Added — Real product-design content & CV (`apps/web`)
+
+- **Positioning**: the site now reads as a Product Designer portfolio first.
+  Header wordmark `alex.dev` → `alex.productDesigner`, nav reordered to lead
+  with the work, hero rewritten around product design with a credentials strip
+  (years, role at SKALES, degree, Google UX certificate) above the fold.
+- **Case studies**: the 3 fictional placeholders (Solane/Kelva/Voltra) are
+  replaced by 4 real ones — SKALES platform redesign, SKALES design system,
+  a freelance two-sided marketplace (client under NDA), and an ongoing personal
+  study of AI tooling in UX work. Metrics are the real ones, including the
+  qualitative outcomes where no number exists.
+- **Design boards**: 15 deliverables (research synthesis, personas, experience
+  map, before/after journeys, roles & permissions, design-system foundations,
+  theming, component specs, benchmark, value proposition, dashboards…) now ship
+  under `public/planches/` and are embedded in the case studies where they
+  belong in the narrative. Each board is self-contained HTML on a fixed
+  1800×1069 canvas; the page displays a PNG rendered from it by
+  `scripts/capture-boards.mts` and links the HTML as the full-size version —
+  an `<img>` renders everywhere, an iframe gets blocked by ad blockers and
+  privacy modes. A note states the boards are 2026 reconstructions.
+- **New case study primitives**: `DecisionTable` (the options that were on the
+  table and why one won) and `BoardFigure`/`BoardGallery`, plus a fourth
+  generated cover-art variant (`signal`).
+- **CV**: served from `public/`, linked from the header, hero, contact section
+  and footer. Opens in a new tab so the browser's own PDF viewer handles both
+  reading and downloading from one control.
+- **Login hidden**: the "Espace" header link is gone — the dashboard is not for
+  visitors. `/login` stays reachable by direct URL and every auth path is still
+  covered by e2e.
+- **Expertise** regrouped around design capabilities (research, conception,
+  design systems, validation) with the technical profile last, as a
+  differentiator rather than the job title.
+- Tests: 37 unit tests (incl. decision table, board figure, and content
+  integrity checks that fail when a referenced board or its rendered PNG is
+  missing) and 14 Playwright specs, all green on a production build.
+
+### Fixed — `next build` on Windows blocked the local e2e suite
+
+- `output: 'standalone'` fails on Windows + pnpm with `EPERM: operation not
+permitted, symlink`, so `pnpm e2e` could not run locally at all. The standalone
+  bundle is only needed by `infra/docker/web.Dockerfile`, which CI builds in its
+  own job, so the e2e build now opts out via `NEXT_OUTPUT_STANDALONE=false`.
+  Production output is unchanged.
+
 ### Changed — Infra: integrate with the VPS's existing Traefik
 
 - The Hostinger VPS already runs a shared Traefik instance for other Docker

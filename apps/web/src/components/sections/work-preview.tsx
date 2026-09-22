@@ -10,9 +10,9 @@ export function WorkPreview() {
       id="work"
       eyebrow="Sélection"
       title="Projets"
-      lead="Trois missions qui montrent comment j'aborde un problème : le contexte, ce qui a été essayé, ce qui a marché."
+      lead="Quatre études de cas détaillées : le problème posé, les options écartées, ce qui a été testé, et ce qui a changé. Livrables réels à l'appui."
     >
-      <ul className="space-y-6">
+      <ul>
         {caseStudies.map((study) => (
           <CaseStudyCard key={study.slug} study={study} />
         ))}
@@ -20,7 +20,7 @@ export function WorkPreview() {
 
       <Link
         href="/work"
-        className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline"
+        className="mt-10 inline-flex items-center gap-2 border-b-2 border-rule pb-1 text-sm font-medium transition-colors hover:border-accent hover:text-accent-text dark:hover:text-accent"
       >
         Voir tous les projets →
       </Link>

@@ -25,6 +25,9 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     env: {
       NEXT_PUBLIC_API_URL: 'http://localhost:4000',
+      // The Docker image is built separately by CI's docker-build job; the
+      // standalone output adds nothing here and breaks the build on Windows.
+      NEXT_OUTPUT_STANDALONE: 'false',
     },
   },
 });
