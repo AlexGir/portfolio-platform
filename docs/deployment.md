@@ -1,10 +1,19 @@
 # Déploiement — VPS Hostinger
 
-Stack : Docker Compose (`web`, `api`, `postgres`, `caddy`) sur un unique VPS.
-Caddy gère le TLS automatique (Let's Encrypt) pour :
+Stack : Docker Compose (`web`, `api`, `postgres`) sur un VPS qui héberge déjà
+d'autres services (ex. `n8n`) derrière un **Traefik partagé** existant
+(`network_mode: host`, découverte par labels Docker, cert resolver
+`letsencrypt`). Cette stack **ne lance pas son propre reverse proxy** — `web`
+et `api` portent juste les labels Traefik nécessaires, exactement comme les
+autres projets sur ce VPS :
 
-- `alexandregiraud.tech` / `www.alexandregiraud.tech` → `web`
-- `api.alexandregiraud.tech` → `api`
+- `alexandregiraud.tech` / `www.alexandregiraud.tech` → `web` (label sur le
+  service `web` dans `infra/compose.prod.yaml`)
+- `api.alexandregiraud.tech` → `api` (label sur le service `api`)
+
+Si un jour ce projet tourne seul sur son propre VPS (sans Traefik déjà en
+place), il faudrait réintroduire un reverse proxy dédié (Caddy ou Traefik) —
+ce n'est pas le cas ici.
 
 Les images sont **construites directement sur le VPS** à chaque déploiement
 (pas de registry) — adapté à un seul serveur personnel. Un registry (GHCR)
@@ -34,8 +43,8 @@ AAAA si IPv6) pointant vers l'IP du VPS :
 | A    | `www` | IP du VPS |
 | A    | `api` | IP du VPS |
 
-Attendre la propagation avant de démarrer Caddy (sinon la demande de
-certificat Let's Encrypt échoue).
+Attendre la propagation avant le premier déploiement (sinon la demande de
+certificat Let's Encrypt par Traefik échoue).
 
 ## 3. Premier déploiement (manuel)
 
