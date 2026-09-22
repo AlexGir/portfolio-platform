@@ -8,9 +8,16 @@ export interface SocialLink {
   href: string;
 }
 
+export interface ResumeLink {
+  /** Served from `apps/web/public`. */
+  href: string;
+  /** Shown next to the link so a recruiter knows the file is current. */
+  updated: string;
+}
+
 export interface Profile {
-  /** TODO: replace with your full name. */
   name: string;
+  /** The one-line positioning shown above the name — keep it a job title, not a sentence. */
   role: string;
   location: string;
   /** One or two sentences for the hero. */
@@ -19,25 +26,31 @@ export interface Profile {
   bio: string[];
   email: string;
   socials: SocialLink[];
+  resume: ResumeLink;
   /** Short, honest availability line shown near the contact CTA. */
   availability: string;
 }
 
 export const profile: Profile = {
-  name: 'Alex G.',
-  role: 'Développeur Full-Stack · UX / Product Design',
-  location: 'France · télétravail',
+  name: 'Alexandre Giraud',
+  role: 'Product Designer · SaaS B2B',
+  location: 'Île-de-France · télétravail',
   tagline:
-    "Je conçois et développe des produits web de bout en bout — de la recherche utilisateur à l'architecture back-end, en passant par le design system et l'interface.",
+    'Je conçois des produits SaaS B2B, de la recherche utilisateur aux écrans livrés. Cinq ans à transformer des outils pensés pour des experts en produits utilisables par tout le monde.',
   bio: [
-    "Développeur Full-Stack avec environ 5 ans d'expérience, au croisement du développement web, de l'UX Research et du Product / UX-UI Design. J'accorde autant d'importance à la qualité technique qu'à l'expérience réelle des utilisateurs.",
-    "J'ai surtout travaillé dans de petites équipes, où j'intervenais sur toutes les étapes d'un produit : cadrage UX, design d'interface, développement front et back, architecture, librairie de composants et applications clientes.",
-    "Ce site est lui-même un terrain d'expérimentation : monorepo TypeScript, API Express (REST + GraphQL), authentification OAuth2/JWT, PostgreSQL, et une suite de tests Vitest + Playwright.",
+    "Product Designer avec près de 5 ans d'expérience sur des produits SaaS B2B, de la modélisation des workflows jusqu'à la livraison des écrans et des user stories. Recherche utilisateur, conception d'interfaces, design systems : j'interviens sur toute la chaîne.",
+    "Chez SKALES, j'étais le seul designer de l'entreprise. J'ai piloté la refonte complète d'une plateforme de gestion de projets utilisée en R&D, en santé et dans l'innovation, et créé le design system qui est devenu le socle de tous ses produits. Depuis juin 2025, je travaille en freelance et sur mes propres projets.",
+    "Mon parcours en informatique (Master Informatique et Design d'Interfaces, Paris-Saclay) change la façon dont je conçois : je sais ce que chaque option coûte à implémenter, je dialogue d'égal à égal avec les développeurs, et je vais coder moi-même les composants quand c'est le plus court chemin. Ce site en est un exemple — je l'ai conçu et développé de bout en bout.",
   ],
-  email: 'alexg91@live.fr',
+  email: 'alexandre.giraud1995@gmail.com',
   socials: [
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/alexandre-giraud-072624142' },
     { label: 'GitHub', href: 'https://github.com/AlexGir' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
   ],
-  availability: 'Ouvert aux discussions pour des missions produit / full-stack.',
+  resume: {
+    href: '/cv-alexandre-giraud-product-designer.pdf',
+    updated: 'Septembre 2026',
+  },
+  availability:
+    'Disponible pour des missions freelance et ouvert aux opportunités Product Designer, en Île-de-France ou à distance.',
 };

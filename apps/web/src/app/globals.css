@@ -6,25 +6,44 @@
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* Warm paper palette — an editorial studio feel rather than app-chrome grey. */
-  --color-bg: #faf7f1;
-  --color-fg: #18140f;
-  --color-muted: #77705f;
-  --color-border: #e6ded0;
-  --color-surface: #f1ebdd;
-  --color-accent: #b8451f;
-  --color-accent-fg: #fff6ee;
+  /*
+   * Warm paper + near-black + one saturated red. The red exists in three roles
+   * rather than one value, because a single #e8442a cannot be accessible
+   * everywhere: white text on it is only 3.97:1. Same reasoning as the SKALES
+   * colour roles in the design-system case study — give a brand colour the job
+   * it can actually do, don't water it down.
+   */
+  --color-bg: #f7f4ed;
+  --color-fg: #121212;
+  --color-muted: #6b6560;
+  --color-border: #ded5c4;
+  --color-rule: #121212;
+  --color-surface: #efeae0;
+
+  /* Display only: large type, rules, marks. Never small text on paper. */
+  --color-accent: #e8442a;
+  /* Solid interactive surfaces — white text on it is 4.84:1. */
+  --color-accent-strong: #d13a1e;
+  /* Small accent text on paper — 5.18:1. */
+  --color-accent-text: #be3417;
+  --color-accent-fg: #ffffff;
 }
 
 .dark {
-  --color-bg: #15120e;
-  --color-fg: #f4ede1;
-  --color-muted: #a89d8a;
-  --color-border: #2c2620;
-  --color-surface: #1e1a15;
-  --color-accent: #e6813f;
-  --color-accent-fg: #1a0f06;
+  --color-bg: #12100e;
+  --color-fg: #f7f4ed;
+  --color-muted: #9a9187;
+  --color-border: #2e2822;
+  --color-rule: #f7f4ed;
+  --color-surface: #1a1714;
+
+  /* On near-black, one lighter red covers every role at 6.74:1. */
+  --color-accent: #ff6b4a;
+  --color-accent-strong: #ff6b4a;
+  --color-accent-text: #ff8a6b;
+  --color-accent-fg: #12100e;
 }
 
 @layer base {
@@ -39,9 +58,20 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Editorial display type: tight, optically balanced at large sizes. */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
   :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-accent-strong);
+    outline-offset: 3px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -58,13 +88,59 @@
 }
 
 @layer utilities {
-  /* Small caps-style label used above headings ("kicker"). */
+  /*
+   * Monospaced label ("kicker"). Mono rather than small-caps sans: it echoes
+   * the labels on the design boards themselves, and it reads as a system
+   * annotation rather than decoration.
+   */
   .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
+  }
+
+  /*
+   * Display type scale. Fluid rather than stepped: an editorial layout wants
+   * large type, but a fixed `text-8xl` that reads well at 1600px is oppressive
+   * on a 1280px laptop. `clamp()` ties each step to the viewport so the same
+   * scale works from a phone to a wide screen without breakpoint jumps.
+   */
+  .display-xl {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+  }
+
+  .display-lg {
+    font-size: clamp(1.875rem, 4.4vw, 3.25rem);
+    line-height: 1.03;
+    letter-spacing: -0.02em;
+  }
+
+  .display-md {
+    font-size: clamp(1.625rem, 3.2vw, 2.375rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .display-sm {
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  /* Oversized editorial numeral, e.g. the process step index. */
+  .numeral {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+
+  /* A heavy full-bleed rule — the main structural device of the layout. */
+  .rule-strong {
+    border-top: 2px solid var(--color-rule);
   }
 
   /* Subtle paper grain so flat colour fields don't look like plain CSS. */
@@ -79,13 +155,13 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.4;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   .dark .grain::before {
-    opacity: 0.35;
+    opacity: 0.3;
   }
 
   /*
@@ -108,5 +184,70 @@
 
   .animate-fade-up {
     animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /*
+   * Scroll-triggered reveal, as pure progressive enhancement.
+   *
+   * `animation-timeline: view()` is driven entirely by the compositor: there is
+   * no observer, no hydration step and no JS at all, so it cannot leave content
+   * stuck at opacity 0 — the failure mode that got framer-motion removed from
+   * this app (see CHANGELOG, PR #6). Browsers without support simply skip the
+   * @supports block and render the content in its final state.
+   */
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /*
+       * Range tuning, the whole difficulty of a scroll-driven reveal:
+       *
+       * - Ending in `entry` (entry 100% = the element's bottom edge reaching
+       *   the viewport's bottom edge) finishes the fade while the block is
+       *   still hugging the bottom of the screen. Technically correct,
+       *   practically invisible — you never catch it.
+       * - Ending in `cover` lets the fade play while the block travels up into
+       *   reading position, which is what actually reads as an animation. The
+       *   catch is that an element at the very bottom of a document can never
+       *   reach a late `cover` percentage, and would stay half-transparent for
+       *   good. 32% is early enough that the site footer below the last
+       *   section guarantees completion — verified against real layout at
+       *   maximum scroll on every page, which is the only way to know.
+       *
+       * Only short blocks get `.reveal`: on an element taller than the
+       * viewport the fade stretches over its whole height and drags, so tall
+       * containers reveal their heading instead of themselves.
+       */
+      .reveal {
+        animation: reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 32%;
+      }
+
+      /* Children of a .reveal-group stagger as the group scrolls into view. */
+      .reveal-group > * {
+        animation: reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 30%;
+      }
+      .reveal-group > *:nth-child(2) {
+        animation-range: entry 0% cover 36%;
+      }
+      .reveal-group > *:nth-child(3) {
+        animation-range: entry 0% cover 42%;
+      }
+      .reveal-group > *:nth-child(n + 4) {
+        animation-range: entry 0% cover 48%;
+      }
+    }
   }
 }

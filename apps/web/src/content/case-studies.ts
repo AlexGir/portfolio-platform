@@ -2,12 +2,13 @@
  * Case study content — the single source of truth for both the homepage
  * "selected work" preview and the full `/work/[slug]` pages.
  *
- * These three are illustrative placeholders (fictional companies) that show
- * the shape and depth a real case study should have. Swap the copy, keep the
- * shape — the UI and tests rely on every field being present.
+ * Real work. Client names are used only where they are public (SKALES); the
+ * freelance client is under NDA and stays anonymous. The design boards under
+ * `/planches` are 2026 reconstructions of the original deliverables — the
+ * originals belong to the clients — which is stated on every board.
  */
 
-export type CoverVariant = 'aurora' | 'grid' | 'orbit';
+export type CoverVariant = 'aurora' | 'grid' | 'orbit' | 'signal';
 
 export interface CoverTone {
   variant: CoverVariant;
@@ -23,6 +24,22 @@ export interface CaseStudyMeta {
   whatChanged: string;
 }
 
+/** A standalone design board (`apps/web/public/planches/…`), embedded in an iframe. */
+export interface Board {
+  /** Absolute path from the site root. */
+  src: string;
+  title: string;
+  caption: string;
+}
+
+/** A decision table — the "why this option and not the others" of a case study. */
+export interface DecisionTable {
+  headers: string[];
+  rows: string[][];
+  /** Row index (0-based) to mark as the option that was chosen. */
+  chosenRow?: number;
+}
+
 export interface ProcessStepDetail {
   heading: string;
   bullets: string[];
@@ -33,6 +50,8 @@ export interface ProcessStep {
   title: string;
   body: string[];
   detail?: ProcessStepDetail;
+  table?: DecisionTable;
+  boards?: Board[];
 }
 
 export interface ImpactMetric {
@@ -51,6 +70,11 @@ export interface CaseStudy {
   year: string;
   readingTime: string;
   cover: CoverTone;
+  /**
+   * The board used as the card thumbnail — a real deliverable beats generated
+   * art. Falls back to `cover` when a case study has no board yet.
+   */
+  coverImage?: string;
   meta: CaseStudyMeta;
   overview: {
     problem: string[];
@@ -58,6 +82,8 @@ export interface CaseStudy {
   };
   approachIntro: string;
   methods: string[];
+  /** Research deliverables, shown with the approach rather than inside a step. */
+  approachBoards?: Board[];
   steps: ProcessStep[];
   reflection: {
     label: string;
@@ -69,259 +95,592 @@ export interface CaseStudy {
 
 export const caseStudies: CaseStudy[] = [
   {
-    slug: 'solane-onboarding',
-    title: "Diviser par deux l'abandon à l'inscription d'un outil de facturation",
+    slug: 'skales-refonte-plateforme',
+    title: "De l'outil d'experts à la plateforme multi-profils",
     summary:
-      "Refonte de l'onboarding d'une app de facturation pour indépendants : 20 champs en une passe devenus un parcours progressif — activation à J+1 en hausse de 41 %.",
-    sector: 'SaaS facturation · indépendants',
-    tags: ['UX research', 'Onboarding', 'Design system'],
-    year: '2025',
-    readingTime: '4 min',
-    cover: { variant: 'aurora', primary: '#b8451f', secondary: '#e8b34a' },
+      "Refonte UX/UI d'une plateforme SaaS B2B pensée par des ingénieurs pour des scientifiques : parcours clé réduit de 15 à 7 étapes et conversion en hausse de 17 à 20 %, validée par A/B test.",
+    sector: 'SaaS B2B · recherche, santé, innovation',
+    tags: ['UX Research', 'Refonte', 'Design multi-profils', 'A/B testing'],
+    year: '2020 — 2025',
+    readingTime: '7 min',
+    cover: { variant: 'aurora', primary: '#005677', secondary: '#4ad746' },
+    coverImage: '/planches/skales-refonte/02-personas.png',
     meta: {
-      client: 'Solane (SaaS de facturation)',
-      role: 'Product designer — recherche, UI, tests',
-      timeline: '7 semaines',
-      whatChanged: "Un formulaire d'inscription unique remplacé par un parcours en 4 étapes",
+      client: 'SKALES — plateforme de gestion de projets',
+      role: "Seul Product Designer de l'entreprise, de l'audit (stage) au pilotage du design produit (CDI)",
+      timeline: 'Septembre 2020 — mai 2025',
+      whatChanged:
+        'Une interface réservée à des experts devenue vendable à des clients sans bagage technique',
     },
     overview: {
       problem: [
-        "Solane aide les indépendants à facturer et suivre leurs paiements. À l'inscription, 20 champs (identité, régime fiscal, coordonnées bancaires, préférences de facturation) étaient demandés en une seule fois, avant même d'avoir montré la moindre valeur au visiteur.",
-        "62 % des inscriptions commencées n'allaient jamais jusqu'à la première facture envoyée. Le support recevait des messages du type « je ne sais pas pourquoi vous me demandez déjà mon SIRET », signe que l'ordre des questions ne correspondait à aucun raisonnement pour l'utilisateur.",
+        "SKALES édite une plateforme SaaS qui centralise la gestion des utilisateurs, des organisations, des licences et l'accès aux applications de ses clients. Elle n'avait jamais été conçue avec ses utilisateurs : parcours lents, étapes superflues, bugs générateurs de plaintes, et aucune cohérence visuelle faute de design system.",
+        "Ce qui rendait la refonte urgente, c'était l'évolution de la clientèle. SKALES signait de plus en plus de clients hors du monde scientifique — secteur médical, équipes sans aucune formation technique. Une interface pensée pour des experts devenait un frein commercial. En parallèle, le périmètre explosait : gestion des droits, thèmes personnalisés, paiement et messagerie à intégrer.",
+        'La question de départ : comment rendre une plateforme plus riche tout en la rendant plus simple, pour des utilisateurs de plus en plus différents les uns des autres ?',
       ],
       solution: [
-        "Un parcours en 4 étapes qui commence par produire quelque chose (un modèle de facture rempli avec les infos de l'utilisateur) avant de demander les champs administratifs, avec des valeurs par défaut intelligentes déduites du secteur d'activité choisi en étape 1.",
+        "Une refonte menée de bout en bout — audit, recherche, conception, tests — plutôt qu'un empilement de correctifs. Le parcours le plus critique a été reconstruit, l'affichage adapté au rôle de chaque utilisateur, les droits rendus lisibles, et chaque organisation a pu adopter son propre vocabulaire et sa propre identité visuelle.",
+        "Au-delà des écrans, l'enjeu était d'installer une méthode UX dans une équipe qui n'en avait pas : des revues produit et des temps de réflexion UX greffés sur les rituels Scrum existants, pas un processus design parallèle.",
       ],
     },
     approachIntro:
-      'Comprendre où et pourquoi les gens décrochaient avant de toucher à une maquette.',
-    methods: ['Analyse de funnel', '9 entretiens utilisateurs', 'Tri de cartes', 'Tests A/B'],
+      "Croiser ce que les gens disent et ce qu'ils font, parce que les deux divergent souvent.",
+    methods: [
+      'Entretiens clients et utilisateurs',
+      'Questionnaires',
+      'Google Analytics, funnels, heatmaps',
+      'Analyse experte (Gestalt, biais cognitifs)',
+      "Tests d'utilisabilité",
+      'A/B testing',
+      'Ateliers',
+    ],
+    approachBoards: [
+      {
+        src: '/planches/skales-refonte/01-synthese-de-la-recherche.html',
+        title: 'Synthèse de la recherche',
+        caption:
+          "Ce que les entretiens, les questionnaires et les données d'usage ont fait remonter, et ce que chaque constat impliquait pour la refonte.",
+      },
+      {
+        src: '/planches/skales-refonte/02-personas.html',
+        title: 'Personas',
+        caption:
+          "Quatre profils construits à partir des entretiens. Le coordinateur non scientifique incarne la nouvelle clientèle qui a rendu la refonte nécessaire — c'est lui le persona prioritaire.",
+      },
+      {
+        src: '/planches/skales-refonte/04-carte-experience.html',
+        title: "Carte d'expérience",
+        caption:
+          "Le parcours de création d'un projet vécu de bout en bout, avec les points de friction là où ils faisaient vraiment décrocher.",
+      },
+    ],
     steps: [
       {
         index: '01',
-        title: 'Le funnel mentait sur le vrai problème',
+        title: "Trop d'information tuait l'usage",
         body: [
-          "La donnée d'analytics montrait un décrochage massif à l'étape « coordonnées bancaires ». L'hypothèse évidente : les gens n'ont pas confiance, il faut rassurer sur la sécurité des données.",
-          "Les entretiens ont montré autre chose : la plupart des utilisateurs abandonnaient avant même de lire le formulaire, dès qu'ils comprenaient sa longueur en le survolant. La confiance n'était pas le sujet — c'était la perception du temps à investir avant tout bénéfice.",
+          "J'ai commencé par les clients, qui centralisaient déjà beaucoup de retours de leurs équipes, avant d'aller voir les utilisateurs finaux en entretien et par questionnaire. Pour objectiver le ressenti, j'ai analysé les parcours avec Google Analytics, des funnels et des heatmaps.",
+          "Mon profil de développeur a servi dès cette étape : j'ai intégré moi-même les trackers manquants — clics, abandons, temps passé par écran — sans attendre qu'ils soient priorisés dans le backlog.",
+          "Les utilisateurs se disaient souvent perdus face à la quantité de données affichée. En croisant le temps passé sur chaque écran avec le rôle de chaque utilisateur sur un projet, nous avons vérifié qu'une grande partie de l'interface ne servait qu'à certains profils. Cette corrélation a guidé toute la suite.",
         ],
         detail: {
-          heading: 'Ce que les entretiens ont changé',
+          heading: 'Ce que le croisement a montré',
           bullets: [
-            "Le vrai point de friction est perçu avant d'être vécu, un simple scroll suffit à faire fuir",
-            'Les indépendants testent 2 à 3 outils en parallèle avant de choisir : chaque minute perdue compte double',
-            "Personne ne sait ce qu'est un « régime réel simplifié » sans l'avoir déjà rempli ailleurs",
+            'Le ressenti « je suis perdu » correspondait à une surcharge réelle, mesurable écran par écran',
+            'Une large part de chaque écran ne concernait que certains rôles du projet',
+            'Les plaintes remontées par les clients et les décrochages mesurés pointaient les mêmes moments du parcours',
           ],
         },
       },
       {
         index: '02',
-        title: "Montrer la valeur avant de demander l'effort",
+        title: 'Diviser par deux le parcours le plus pénible',
         body: [
-          "Le nouveau parcours inverse l'ordre : étape 1 récupère juste le secteur d'activité et le nom de l'entreprise, puis génère immédiatement un aperçu de facture personnalisé. L'utilisateur voit le produit fonctionner avant qu'on lui demande quoi que ce soit d'administratif.",
-          'Les champs fiscaux et bancaires arrivent ensuite, mais reformulés autour de la tâche (« Pour encaisser vos paiements ») plutôt que comme une liste de champs de base de données.',
+          "Créer un projet opérationnel, jusqu'à une application intégrée et utilisable, était le parcours le plus critique de la plateforme. Son étape la plus pénible était l'attribution des licences : un enchaînement incompris, et aucune façon de désactiver proprement une licence une fois intégrée. Les funnels montraient précisément où les utilisateurs décrochaient.",
+          "J'ai repensé le parcours de bout en bout : regrouper les étapes liées, supprimer celles que la plateforme pouvait déduire seule, rendre chaque action réversible, licences comprises. Les nouvelles versions ont été prototypées puis validées par A/B test avant déploiement.",
         ],
         detail: {
-          heading: 'Parcours en 4 étapes',
+          heading: 'De 15 à 7 étapes',
           bullets: [
-            'Secteur + nom → aperçu de facture instantané',
-            'Informations légales, pré-remplies quand possible (API SIRENE)',
-            'Coordonnées bancaires, présentées comme la dernière étape avant encaissement',
-            'Première facture envoyée dans le parcours, pas après',
+            'Regroupement des étapes qui relevaient d’une même décision',
+            'Suppression de tout ce que la plateforme pouvait déduire seule',
+            'Chaque action rendue réversible, y compris la désactivation d’une licence',
+            'Validation par A/B test avant déploiement, puis comparaison avant/après',
           ],
         },
+        boards: [
+          {
+            src: '/planches/skales-refonte/03-parcours-avant-apres.html',
+            title: 'Parcours avant / après',
+            caption:
+              "Le parcours de création d'un projet, avant et après refonte. Les étapes supprimées sont celles que la plateforme pouvait déduire ou regrouper.",
+          },
+        ],
       },
       {
         index: '03',
-        title: 'Un design system pour tenir la promesse dans la durée',
+        title: 'Montrer à chacun ce dont il a besoin',
         body: [
-          "Le risque d'un onboarding travaillé isolément est qu'il détonne avec le reste du produit. Les composants du parcours (champs, aperçu de facture, barre de progression) ont été versés dans le design system existant plutôt que construits à part, pour que la cohérence tienne au-delà du lancement.",
+          "Face à la surcharge d'information, trois options existaient : garder l'interface complète avec des filtres, laisser chaque utilisateur personnaliser son affichage, ou adapter l'affichage au rôle.",
+          "Nous avons retenu un double niveau. Par défaut, l'affichage s'adapte au rôle de l'utilisateur sur le projet. Un administrateur peut ensuite accorder facilement une visibilité supplémentaire à une personne précise, pour couvrir les cas que les rôles ne prévoient pas.",
         ],
+        table: {
+          headers: ['Option', 'Ce qu’elle réglait', 'Pourquoi elle ne suffisait pas'],
+          rows: [
+            [
+              'Interface complète + filtres',
+              'Aucun développement structurant, réversible',
+              "Déplace le problème : il faut déjà savoir quoi filtrer pour s'y retrouver",
+            ],
+            [
+              'Personnalisation libre par utilisateur',
+              'Chacun obtient exactement son écran',
+              'Demande un effort de configuration que nos utilisateurs ne feraient pas',
+            ],
+            [
+              "Affichage adapté au rôle, ajustable par l'admin",
+              'Le bon écran par défaut, sans effort, avec une soupape pour les cas particuliers',
+              '—',
+            ],
+          ],
+          chosenRow: 2,
+        },
+      },
+      {
+        index: '04',
+        title: 'Rendre les droits compréhensibles',
+        body: [
+          "La gestion des droits ralentissait la mise en place d'un projet de bout en bout. J'ai proposé des profils de droits prêts à l'emploi — utilisateur, manager, administrateur… — couvrant la majorité des besoins, puis une interface dédiée pour modifier un profil ou ajuster les droits d'un utilisateur précis. Un manager peut régler une sous-sélection de droits pour les membres de son projet, sur ce projet uniquement, sans toucher au reste de l'organisation.",
+          "L'interface regroupe les droits par familles repliables — principe de proximité de la Gestalt — pour cocher ou décocher un ensemble rapidement. J'ai surtout tenu à ce que chaque droit soit formulé simplement et que ses conséquences pour l'utilisateur concerné soient explicites avant validation.",
+        ],
+        boards: [
+          {
+            src: '/planches/skales-refonte/05-roles-et-droits.html',
+            title: 'Rôles et droits',
+            caption:
+              "Les profils prêts à l'emploi, l'ajustement fin par utilisateur, et la formulation de chaque droit avec sa conséquence explicite avant validation.",
+          },
+        ],
+      },
+      {
+        index: '05',
+        title: 'Laisser chaque client parler sa propre langue',
+        body: [
+          "En échangeant avec les clients, un collègue et moi avons repéré une série de tickets similaires : le vocabulaire de la plateforme ne correspondait pas à celui de leur métier. Imposer un lexique neutre unique n'aurait satisfait personne.",
+          "Nous avons comparé le temps passé à traiter ces tickets avec le coût d'une fonctionnalité de labels personnalisables. Le moment était idéal : la refonte et la personnalisation des thèmes touchaient déjà la base de données. Chaque organisation a ainsi pu adapter ses libellés, importer ses propres langues, et appliquer son identité visuelle.",
+          "Les thèmes servaient aussi l'accessibilité, en proposant des variantes adaptées au daltonisme et à d'autres troubles visuels.",
+        ],
+        detail: {
+          heading: 'Argumenter le design en coût, pas en confort',
+          bullets: [
+            "Le design n'était pas le poste prioritaire d'une startup : chaque chantier devait se justifier",
+            "J'ai appris à chiffrer le temps perdu en support et les opportunités commerciales freinées",
+            'Cet argumentaire a débloqué plusieurs décisions, dont celle-ci',
+          ],
+        },
       },
     ],
     reflection: {
-      label: 'Ce que ce projet a confirmé',
-      text: "Un funnel d'analytics dit où les gens partent, jamais pourquoi. Le taux d'abandon le plus visible n'est pas toujours le bon point d'entrée : ici, le vrai décrochage avait lieu avant l'étape la plus longue, pas pendant.",
+      label: "Ce que j'en retiens",
+      text: "Une méthode doit survivre à celui qui la porte. J'ai installé des revues produit et des réflexes UX dans l'équipe, mais ils reposaient beaucoup sur ma présence. C'est la leçon que j'ai le plus appliquée depuis : en freelance comme sur mes projets, je documente systématiquement recherches, décisions et rituels pour qu'ils restent transmissibles.",
     },
     impact: [
-      { label: 'Activation à J+1', value: '+41 %' },
-      { label: 'Abandon à l’inscription', value: '−52 %' },
-      { label: 'Temps jusqu’à la 1ère facture', value: '−3,5 min' },
-      { label: 'Tickets support « pourquoi ces infos »', value: '−68 %' },
+      { label: 'Étapes du parcours critique', value: '15 → 7' },
+      { label: "Taux d'abandon", value: '≈ −25 % (relatif)' },
+      { label: 'Projets menés jusqu’à une app utilisable', value: '+17 à 20 %' },
+      { label: 'Méthode de validation', value: 'A/B test + avant/après' },
     ],
     closing:
-      "L'équipe support a vu disparaître une catégorie entière de tickets, et le produit a gagné une histoire à raconter dès la première minute plutôt qu'un formulaire à remplir.",
+      "La plateforme est devenue utilisable, et donc vendable, à des clients sans bagage scientifique. Les plaintes et les sollicitations du support ont diminué, et l'équipe produisait de nouveaux écrans plus vite, avec moins d'allers-retours entre design et développement.",
   },
   {
-    slug: 'kelva-design-system',
-    title: 'Unifier 6 outils internes derrière un seul design system',
+    slug: 'skales-design-system',
+    title: "Un seul système, autant d'identités que de clients",
     summary:
-      'Passage de 6 interfaces internes incohérentes à un design system commun, adopté par 3 équipes produit sans ralentir leur roadmap.',
-    sector: 'Outils internes B2B',
-    tags: ['Design system', 'Gouvernance', 'Développement front'],
-    year: '2024',
-    readingTime: '5 min',
-    cover: { variant: 'grid', primary: '#1f6f6b', secondary: '#18140f' },
+      "Création du design system et de la bibliothèque de composants de tout l'écosystème SKALES : ~200 composants, de Figma jusqu'au code, capables d'afficher l'identité visuelle de chaque client sans toucher un seul composant.",
+    sector: 'Design system · bibliothèque React',
+    tags: ['Design system', 'Theming', 'Accessibilité', 'Développement React'],
+    year: '2020 — 2025',
+    readingTime: '6 min',
+    cover: { variant: 'grid', primary: '#005677', secondary: '#00b908' },
+    coverImage: '/planches/skales-design-system/01-fondations.png',
     meta: {
-      client: 'Kelva (suite d’outils internes)',
-      role: 'Design system lead — design & développement',
-      timeline: '5 mois, par itérations',
+      client: 'SKALES — plateforme, add-ons, apps clientes, outils low-code',
+      role: 'Initiateur et responsable du design system, co-développeur de la bibliothèque React',
+      timeline: 'Design system fin 2020, bibliothèque dès 2021',
       whatChanged:
-        'Un design system versionné, adopté par 3 équipes, en remplacement de 6 UI ad hoc',
+        'Des composants réécrits par chaque application devenus un socle unique, thématisable par client',
     },
     overview: {
       problem: [
-        "Chaque équipe produit avait construit son propre outil interne (facturation, support, provisioning) au fil de l'eau. Résultat : 6 boutons différents pour « valider », des tableaux qui ne se comportaient pas pareil d'un outil à l'autre, et un temps de montée en compétence de plusieurs semaines pour toute personne changeant d'équipe.",
-        "Côté développement, chaque composant était réécrit à chaque nouvel écran. Une simple évolution d'accessibilité (contraste, focus clavier) demandait 6 correctifs séparés.",
+        "Chaque application SKALES recodait ses propres boutons, formulaires et tableaux, avec leurs petites différences et leurs bugs. Le même bouton existait en plusieurs versions, et chaque correction devait être répliquée partout — quand elle l'était.",
+        "Le symptôme le plus parlant concernait les états. Des boutons censés être désactivés ne l'affichaient pas : ni grisés, ni masqués, ils invitaient à cliquer sur une action impossible. Rien de grave pour la sécurité, mais une source constante de confusion et de tickets.",
       ],
       solution: [
-        "Un design system construit à partir de l'existant plutôt qu'en rupture : audit des patterns déjà en place, extraction de ceux qui marchaient, documentation des tokens (couleur, espacement, typographie) et une librairie de composants React versionnée, avec un processus d'adoption équipe par équipe plutôt qu'un big-bang.",
+        "Un design system dont tout part de décisions élémentaires nommées — les design tokens. Les composants ne contiennent aucune valeur en dur : changer de thème revient à changer les tokens, jamais les composants. C'est ce qui a rendu possible l'affichage de l'identité de chaque client, et des thèmes adaptés aux troubles visuels.",
+        "Un design system est un produit à part entière, avec ses propres utilisateurs. Pour ceux qui construisent — développeurs et designer — la promesse était la vitesse et la fiabilité. Pour ceux qui en bénéficient — utilisateurs finaux et clients — la cohérence et l'appropriation.",
       ],
     },
-    approachIntro: "Construire avec les équipes qui allaient devoir l'adopter, pas à côté d'elles.",
+    approachIntro:
+      'Traiter le design system comme un produit : deux publics, deux promesses, et une gouvernance qui tient dans la durée.',
     methods: [
-      'Audit UI des 6 outils',
-      'Ateliers avec les tech leads',
-      'Tokens & Storybook',
-      'Plan d’adoption progressif',
+      'Audit des composants existants',
+      'Benchmark de fondations techniques',
+      'Design tokens',
+      'Figma + Storybook',
+      'Développement React',
+      'Contrastes WCAG',
     ],
     steps: [
       {
         index: '01',
-        title:
-          "Partir d'un système from-scratch aurait été plus rapide à concevoir, plus lent à adopter",
+        title: 'Choisir la fondation en raisonnant en coût de production',
         body: [
-          "La tentation initiale était de repartir d'une page blanche avec une librairie externe (une des grandes UI kits React). Plus rapide à mettre en place, visuellement cohérent immédiatement.",
-          "Le problème serait apparu après : aucune des 6 équipes n'aurait reconnu ses propres patterns dedans, et la migration aurait demandé une réécriture complète de chaque outil au lieu d'une adoption progressive. Le choix a été de partir des composants existants les plus solides et de les nettoyer, pas de les remplacer.",
+          "Nous avons retenu Material UI après l'avoir comparé à ses deux vrais concurrents sur le rendu visuel obtenu et le coût de production réel. Trois développeurs pour environ 200 composants : chaque heure d'implémentation comptait.",
+          "L'argument décisif était la thématisation : Material UI permet de changer tout le thème à l'exécution. C'était exactement ce qu'il fallait pour afficher l'identité de chaque client et proposer des thèmes adaptés aux troubles visuels. Son principal défaut, un style très reconnaissable, se corrigeait justement par nos propres tokens. Chakra UI a aussi été testé, puis écarté : son écosystème était encore restreint à l'époque.",
         ],
-      },
-      {
-        index: '02',
-        title: 'Des tokens avant des composants',
-        body: [
-          "Avant de toucher au moindre bouton, la couleur, l'espacement et la typographie ont été extraits en tokens documentés. C'est ce niveau, invisible pour les utilisateurs finaux, qui a permis ensuite de corriger un problème d'accessibilité une seule fois pour les 6 outils au lieu de 6 fois.",
-        ],
-        detail: {
-          heading: 'Ce que les tokens ont réglé d’un coup',
-          bullets: [
-            'Contraste de texte conforme WCAG AA sur les 6 outils simultanément',
-            'Un seul focus ring clavier, cohérent partout',
-            "Espacements standardisés — fin des tableaux plus denses dans un outil que dans l'autre",
+        table: {
+          headers: ['Option', 'Atout', 'Limite pour notre cas'],
+          rows: [
+            [
+              'HTML/CSS natif',
+              'Liberté visuelle totale',
+              'Tout à reconstruire : états, accessibilité, navigation clavier. Coût intenable à trois',
+            ],
+            [
+              'Bootstrap',
+              'Connu de tous, rapide à démarrer',
+              'Rendu daté et reconnaissable, thématisation profonde laborieuse',
+            ],
+            [
+              'Material UI',
+              'Thématisation dynamique, accessibilité intégrée, composants riches (tableaux, sélecteurs de date)',
+              'Look « Material » à neutraliser, surcharges de style parfois verbeuses',
+            ],
           ],
+          chosenRow: 2,
         },
       },
       {
-        index: '03',
-        title: 'Adopter équipe par équipe, avec un budget de migration explicite',
+        index: '02',
+        title: 'Des tokens avant les composants',
         body: [
-          "Chaque équipe a migré un écran à la fois, avec un budget de temps négocié à l'avance plutôt qu'imposé. Les tech leads ont été impliqués dès les ateliers de tokens, pas seulement au moment de l'implémentation — ce qui a évité l'effet « design system imposé d'en haut » qui fait échouer beaucoup de ces projets.",
+          'Tout part de décisions élémentaires nommées : couleurs, typographie, espacements, rayons, états. Les composants ne contiennent aucune valeur en dur, donc changer de thème ne touche jamais un composant.',
+          "La palette d'origine posait un vrai problème d'accessibilité : le vert de la marque n'a qu'un contraste de 1,89:1 avec du texte blanc, loin des 4,5:1 requis. Plutôt que de le retirer, je lui ai donné un rôle où il fonctionne — accent sur fond sombre, à 7,98:1 — et confié les actions principales au bleu pétrole, à 8,08:1. L'identité est préservée, les contrastes sont conformes.",
+          "Côté typographie, les clients choisissaient leur police parmi les Google Fonts : le système fixait donc l'échelle et les graisses, pas la famille. Inter par défaut pour l'interface, pour sa lisibilité en petite taille et ses chiffres tabulaires dans les tableaux, et Manrope pour les titres.",
         ],
         detail: {
-          heading: 'Processus d’adoption',
+          heading: 'Répartition des rôles de couleur',
           bullets: [
-            'Un tech lead référent par équipe, impliqué dès la phase tokens',
-            'Migration écran par écran, jamais un big-bang',
-            'Checklist qualité (accessibilité, responsive) intégrée à la revue de code',
+            'Action principale — Bleu 700, texte blanc : 8,08:1',
+            'Accent et mise en avant — Vert 400, texte Neutre 900 : 7,98:1',
+            'Texte principal — Neutre 900 sur Neutre 100 : 13,30:1',
+            'Erreur : 5,62:1 · Avertissement : 4,67:1 — tous vérifiés selon les WCAG',
+          ],
+        },
+        boards: [
+          {
+            src: '/planches/skales-design-system/01-fondations.html',
+            title: 'Fondations',
+            caption:
+              "Palette complète en dix paliers, rôles de couleur avec leur ratio de contraste, échelle typographique et grille d'espacement de 4 px.",
+          },
+          {
+            src: '/planches/skales-design-system/02-theming.html',
+            title: 'Theming',
+            caption:
+              'Le même écran sous plusieurs thèmes client, et les variantes pensées pour le daltonisme — obtenues en changeant les tokens, jamais les composants.',
+          },
+        ],
+      },
+      {
+        index: '03',
+        title: 'Des états définis une fois pour toutes',
+        body: [
+          "Chaque composant interactif spécifie les mêmes états : par défaut, survol, focus, actif, désactivé, chargement, erreur. Le bug des boutons désactivés ne pouvait plus se reproduire, puisque l'état n'était plus redéfini application par application.",
+          "Le même raisonnement s'applique à la validation des saisies : quand annoncer une erreur, comment la formuler, et ce que l'utilisateur doit pouvoir faire ensuite. Ces règles vivent dans le système, pas dans la tête de chaque développeur.",
+        ],
+        boards: [
+          {
+            src: '/planches/skales-design-system/03-button-et-input.html',
+            title: 'Button et Input',
+            caption:
+              'Les variantes et les sept états spécifiés pour les deux composants les plus utilisés du système, avec leurs cotes et leurs tokens.',
+          },
+          {
+            src: '/planches/skales-design-system/04-validation-des-saisies.html',
+            title: 'Validation des saisies',
+            caption:
+              "Quand une erreur apparaît, comment elle est formulée, et ce que l'utilisateur peut faire ensuite — spécifié au niveau du système.",
+          },
+        ],
+      },
+      {
+        index: '04',
+        title: 'Faire vivre le système, et le développer moi-même',
+        body: [
+          "Un design system ne vaut que s'il reste la source de vérité. J'ai conçu sa documentation pour qu'un composant Figma et son équivalent codé soient strictement identiques : Storybook côté code, et pour chaque composant une fiche détaillée avec cotes, typographies, couleurs et variantes d'états. Tout nouveau besoin client suivait le même chemin — prototype, validation, intégration Figma + Storybook, mise en production — sans raccourci.",
+          "Participer moi-même au développement React, aux côtés de deux développeurs, a été déterminant. Je concevais en connaissant le coût de chaque choix, et la fidélité entre maquette et produit ne dépendait pas d'une traduction approximative. Quelques développeurs trouvaient au début le processus plus long ; la stabilité obtenue les a rapidement convaincus.",
+        ],
+        detail: {
+          heading: 'La gouvernance en quatre temps',
+          bullets: [
+            'Nouveau besoin client identifié',
+            'Prototype et validation',
+            'Intégration simultanée dans Figma et Storybook',
+            'Mise en production sur les applications',
           ],
         },
       },
     ],
     reflection: {
-      label: 'Ce que ce projet a confirmé',
-      text: "Un design system n'est pas un problème de composants, c'est un problème d'adoption. La partie visible (Storybook, tokens) est plus simple à livrer que la partie invisible : convaincre une équipe qui a déjà son outil qui marche de changer ses habitudes sans casser sa vélocité.",
+      label: "Ce que j'en retiens",
+      text: "Poser une référence avant de changer. Les gains étaient évidents pour l'équipe, mais difficiles à chiffrer : le coût des tickets liés à l'interface n'avait jamais été suivi avant le projet. Aujourd'hui, je mettrais en place dès le lancement quelques indicateurs simples — tickets d'interface, temps de livraison d'un écran, taux de réutilisation — pour pouvoir démontrer la valeur du système, et pas seulement la constater.",
     },
     impact: [
-      { label: 'Outils unifiés', value: '6 → 1 système' },
-      { label: 'Composants dupliqués supprimés', value: '−73 %' },
-      { label: 'Temps d’implémentation d’un nouvel écran', value: '−35 %' },
-      { label: 'Équipes ayant adopté le système', value: '3 / 3' },
+      { label: 'Composants du système', value: '≈ 200' },
+      { label: 'Produits SKALES couverts', value: 'La totalité' },
+      { label: 'Vitesse sur les applications complexes', value: '×2 à ×2,5' },
+      { label: 'Temps récupéré par développeur', value: '≈ ½ journée / semaine' },
     ],
     closing:
-      'Un an après, le design system est devenu la référence par défaut pour tout nouvel outil interne — plus par habitude acquise que par obligation.',
+      "Au lancement, le gain sur la production d'un écran n'était que d'environ 5 % — insuffisant pour rentabiliser l'effort de construction. Une fois le système et la bibliothèque arrivés à maturité, nous produisions des applications complexes 2 à 2,5 fois plus vite que nos concurrents, un constat partagé par plusieurs clients.",
   },
   {
-    slug: 'voltra-supervision',
-    title: 'Rendre lisible un dashboard de supervision que plus personne ne regardait vraiment',
+    slug: 'marketplace-closers',
+    title: "Concevoir une marketplace avant qu'elle n'existe",
     summary:
-      "Refonte du poste de supervision temps réel d'une équipe support technique : d'un flux d'alertes ignoré à une vue de triage utilisée en continu.",
-    sector: 'Supervision technique · temps réel',
-    tags: ['Recherche terrain', 'UI dense', 'Produit temps réel'],
-    year: '2023',
-    readingTime: '4 min',
-    cover: { variant: 'orbit', primary: '#3b3f8f', secondary: '#c23b3b' },
+      "Mission freelance pour une start-up en pré-lancement : démarche UX complète, de la proposition de valeur aux prototypes testés, avec l'IA comme accélérateur de production. Mission reconduite.",
+    sector: 'Marketplace à deux faces · pré-lancement',
+    tags: ['Product Discovery', 'Benchmark', "Tests d'utilisabilité", 'Design system', 'IA'],
+    year: '2026',
+    readingTime: '6 min',
+    cover: { variant: 'orbit', primary: '#b8451f', secondary: '#e8b34a' },
+    coverImage: '/planches/marketplace-closers/05-matchmaking-mobile.png',
     meta: {
-      client: 'Voltra (plateforme de supervision)',
-      role: 'Product designer — recherche terrain, UI, prototypage',
-      timeline: '2 mois',
-      whatChanged: "Un flux d'alertes chronologique remplacé par une vue de triage priorisée",
+      client: 'Start-up du closing freelance (confidentiel, pré-lancement)',
+      role: 'Product Designer freelance, seul designer du projet',
+      timeline: 'Deux phases de trois mois en 2026, reconduite après la première',
+      whatChanged:
+        'Une interface validée par des tests avant le lancement, plutôt que corrigée après',
     },
     overview: {
       problem: [
-        "L'équipe support de Voltra surveille l'état de centaines de services clients depuis un dashboard listant les incidents par ordre d'arrivée. Avec 200 à 400 événements par jour, la liste défilait plus vite qu'elle ne pouvait être lue.",
-        "Les agents avaient développé leurs propres filtres personnels dans des fichiers à part pour s'y retrouver — chacun avec sa méthode, aucune ne transmissible à un nouvel arrivant. Les vrais incidents critiques se perdaient parfois dans le flux.",
+        "Pas d'interface existante, pas d'« avant » à corriger : tout était à construire, pendant que l'équipe technique développait en parallèle. La start-up met en relation des closers freelance — des commerciaux spécialisés dans la conclusion de ventes — avec des entreprises qui cherchent à renforcer leurs équipes.",
+        "Trois contraintes structuraient la mission. Une marketplace à deux faces, où chaque décision doit convenir à la fois aux freelances et aux entreprises. Un développement mené en parallèle de la conception. Et surtout un code généré par une plateforme d'IA alimentée directement par mes livrables : la moindre imprécision dans une maquette devenait une imprécision dans le produit.",
       ],
       solution: [
-        "Une vue de triage qui regroupe les événements par gravité réelle et par service affecté plutôt que par heure d'arrivée, avec les filtres jusqu'ici personnels transformés en vues partagées configurables par l'équipe elle-même.",
+        "J'ai volontairement repoussé les maquettes. Sur un produit sans utilisateurs publics, la tentation est de dessiner tout de suite ; le risque est de soigner une interface qui répond à la mauvaise question. J'ai commencé par la stratégie — besoins couverts, modèle économique, proposition de valeur — puis le benchmark, puis les entretiens.",
+        "Les maquettes sont venues ensuite, accélérées par l'IA, et sont repassées en boucle par les tests : une quinzaine de journées de tests d'utilisabilité, d'A/B testing et d'audit heuristique réparties sur les six mois.",
       ],
     },
-    approachIntro: "Observer le travail réel avant de discuter de l'interface.",
+    approachIntro:
+      "Commencer par la stratégie et le marché, finir par les pixels — l'inverse du réflexe habituel sur un produit qui n'existe pas encore.",
     methods: [
-      'Observation en immersion (2 jours)',
-      'Tri des 400 derniers incidents',
-      'Prototypage rapide',
-      'Tests avec les agents en poste',
+      'Proposition de valeur',
+      'Benchmark concurrentiel',
+      'Entretiens closers et entreprises',
+      '≈ 15 journées de tests',
+      'A/B testing',
+      'Audit heuristique',
+    ],
+    approachBoards: [
+      {
+        src: '/planches/marketplace-closers/02-proposition-de-valeur.html',
+        title: 'Proposition de valeur',
+        caption:
+          'Ce que la plateforme promet à chacune de ses deux faces, et sur quoi repose réellement sa différenciation.',
+      },
+      {
+        src: '/planches/marketplace-closers/04-benchmark.html',
+        title: 'Benchmark concurrentiel',
+        caption:
+          'Trois grandes plateformes freelance, une plateforme française spécialisée et deux CRM leaders. Le constat : les plateformes savent mettre en relation, les CRM savent suivre des ventes, aucune ne fait les deux pour les closers indépendants.',
+      },
+      {
+        src: '/planches/marketplace-closers/03-personas.html',
+        title: 'Personas',
+        caption:
+          'Les profils des deux faces de la marketplace, construits à partir des entretiens avec de futurs utilisateurs.',
+      },
     ],
     steps: [
       {
         index: '01',
-        title: 'Le premier réflexe : une timeline plus claire',
+        title: 'Tester un matchmaking par swipe plutôt que d’en débattre',
         body: [
-          "Le brief initial demandait une timeline mieux hiérarchisée visuellement — plus de couleur, une meilleure typographie, moins de bruit visuel. C'est ce qui a été esquissé en premier.",
-          "Deux jours passés aux côtés des agents ont changé le diagnostic : le problème n'était pas la lisibilité de chaque ligne, mais l'ordre dans lequel les lignes apparaissaient. Un agent scrollait activement pour retrouver un incident critique noyé entre 40 alertes mineures du même service.",
+          "Le matchmaking était le cœur du produit. L'idée d'un geste de swipe, emprunté aux applications de rencontre, était séduisante mais risquée dans un contexte professionnel. Plutôt que d'en débattre en réunion, j'en ai produit rapidement des prototypes visuellement aboutis grâce à l'IA, pour que la direction puisse juger sur pièce.",
+          "Le swipe a ensuite été comparé en test à un matchmaking classique en liste, tout comme deux façons de trouver une mission : une barre de recherche avec filtres, ou des critères à sélectionner. Le swipe a été retenu sur mobile ; sur ordinateur, la liste reste plus adaptée à la comparaison. La recherche est restée importante, mais sur mobile les critères à sélectionner l'ont emporté, parce qu'ils sont plus accessibles qu'une saisie libre.",
+        ],
+        boards: [
+          {
+            src: '/planches/marketplace-closers/05-matchmaking-mobile.html',
+            title: 'Matchmaking mobile',
+            caption:
+              'Le parcours de matchmaking retenu sur mobile après comparaison en test avec une présentation en liste.',
+          },
+        ],
+      },
+      {
+        index: '02',
+        title: 'Faire du suivi des données la raison de rester',
+        body: [
+          'Une plateforme de mise en relation se fait souvent quitter une fois le contrat signé. Le suivi intégré des ventes, des retours et des performances donnait aux closers une raison de revenir chaque jour.',
+          "J'ai conçu ces écrans comme un outil de travail, pas comme une vitrine : le taux de closing en tête, l'indicateur que les closers citaient en premier en entretien, puis le nombre de closings, les commissions et le détail par mission.",
+        ],
+        boards: [
+          {
+            src: '/planches/marketplace-closers/06-tableau-de-bord.html',
+            title: 'Tableau de bord du closer',
+            caption:
+              "La hiérarchie de l'écran suit l'ordre dans lequel les closers citaient leurs indicateurs en entretien, pas l'ordre dans lequel la base de données les stocke.",
+          },
+        ],
+      },
+      {
+        index: '03',
+        title: 'Faire du design system le contrat avec le code généré',
+        body: [
+          "L'équipe transformait mes livrables en code via une plateforme d'IA accessible à des profils peu techniques. Dans ce modèle, une maquette approximative produit un écran approximatif.",
+          "J'ai donc construit un design system strict et accompagné chaque maquette de spécifications d'implémentation précises, pour que l'outil n'ait rien à deviner. J'ai aussi codé moi-même quelques composants très spécifiques du système.",
         ],
         detail: {
-          heading: 'Ce que l’observation a changé',
+          heading: "Ce que l'IA a accéléré, et ce qu'elle n'a pas remplacé",
           bullets: [
-            'Le tri chronologique traite un incident critique et une alerte cosmétique de la même façon',
-            'Les agents créaient déjà, à la main, des filtres par gravité — la solution existait déjà en germe chez eux',
-            "Personne ne lisait la timeline en entier : tout le monde scrollait à la recherche d'un signal",
+            'Accéléré : des maquettes et prototypes testables en quelques heures au lieu de plusieurs jours',
+            "Accéléré : montrer des directions visuellement fortes et comparables, au lieu de demander d'imaginer",
+            "Pas remplacé : rien de ce que l'IA générait n'allait tel quel dans le produit",
+            'Pas remplacé : les décisions sont restées celles de la recherche et des tests',
+          ],
+        },
+        boards: [
+          {
+            src: '/planches/marketplace-closers/01-methode-designer-et-ia.html',
+            title: 'Méthode designer et IA',
+            caption:
+              "Où l'IA intervient dans mon processus, et où elle n'intervient pas — la frontière entre production accélérée et décision de conception.",
+          },
+        ],
+      },
+    ],
+    reflection: {
+      label: "Ce que j'en retiens",
+      text: "L'IA impressionne, la spécification décide. Un prototype généré convainc une direction en une réunion. Mais quand le produit lui-même est généré par une IA, c'est la rigueur du design system et des spécifications qui fait la qualité finale. Mon travail s'est déplacé de la production vers la définition.",
+    },
+    impact: [
+      { label: 'Mission', value: 'Reconduite (2 × 3 mois)' },
+      { label: 'Recommandations implémentées', value: "Majorité, avant l'ouverture" },
+      { label: 'Journées de tests', value: '≈ 15' },
+      { label: 'Périmètre', value: 'Web + mobile, deux faces' },
+    ],
+    closing:
+      "Il n'y avait pas d'« avant » à comparer : le résultat se mesure à ce qui a été adopté. La mission a été reconduite après la première phase, la majorité des recommandations doit être livrée avant l'ouverture publique, et la direction a fait des retours très positifs sur la démarche comme sur les livrables.",
+  },
+  {
+    slug: 'ia-et-demarche-ux',
+    title: "L'IA peut-elle vraiment accélérer la démarche UX ?",
+    summary:
+      "Projet personnel de veille : cinq outils d'IA évalués sur des sujets comparables et cinq critères identiques, pour distinguer ce qui accélère la conception de ce qui la saute.",
+    sector: 'Projet personnel · veille et méthode',
+    tags: ['Veille', 'Méthode', 'IA', 'Automatisation'],
+    year: '2026 — en cours',
+    readingTime: '4 min',
+    cover: { variant: 'signal', primary: '#3b3f8f', secondary: '#b8451f' },
+    meta: {
+      client: 'Projet personnel, mené seul',
+      role: 'Conception du protocole, tests, synthèse',
+      timeline: 'Depuis juin 2026, en cours',
+      whatChanged: 'Un positionnement outillé et argumenté, au lieu d’un avis de principe sur l’IA',
+    },
+    overview: {
+      problem: [
+        "Tous les outils d'IA promettent de « designer plus vite ». Je fais partie d'une communauté de designers UX/UI en Île-de-France, et les avis y étaient très partagés : certains gagnaient un temps fou, d'autres jugeaient les résultats inutilisables.",
+        "Je voulais savoir s'ils aident vraiment à améliorer une expérience, ou s'ils produisent seulement de beaux écrans plus tôt. La question de départ : quels outils font vraiment gagner du temps, sans sacrifier la qualité de l'expérience ?",
+      ],
+      solution: [
+        'Un protocole simple mais tenu : chaque outil reçoit le même type de mission — créer un parcours complet, crédible pour une vraie application — et est évalué sur les mêmes cinq critères.',
+        "Ce qui m'intéresse d'abord, c'est la démarche UX, plus que le prototypage. Si l'IA me fait gagner du temps sur les maquettes, c'est du temps que je peux consacrer à la recherche et aux tests.",
+      ],
+    },
+    approachIntro:
+      "Comparer des outils sur des sujets comparables, avec des critères écrits d'avance — pas sur une impression après une démo.",
+    methods: [
+      'Protocole comparatif',
+      'Critères identiques pour tous',
+      'Échanges avec une communauté de designers',
+      'Automatisations n8n',
+    ],
+    steps: [
+      {
+        index: '01',
+        title: 'Écrire les critères avant de tester',
+        body: [
+          'Pour que la comparaison ait du sens, chaque outil a reçu le même type de mission et a été jugé sur les mêmes cinq critères, définis avant le premier test.',
+        ],
+        table: {
+          headers: ['Critère', 'Ce que je regardais'],
+          rows: [
+            ['Rapidité', 'Le temps pour obtenir un premier résultat utilisable'],
+            [
+              "Qualité de l'expérience",
+              'Un parcours cohérent, une hiérarchie claire, les erreurs et les cas particuliers prévus',
+            ],
+            ['Précision des retouches', 'Pouvoir corriger un détail sans devoir tout régénérer'],
+            [
+              'Cohérence et accessibilité',
+              'Respecter le design system imposé, avec des contrastes et des zones cliquables accessibles',
+            ],
+            [
+              'Passage au réel',
+              'Pouvoir tester le résultat avec des utilisateurs et le transmettre à des développeurs',
+            ],
           ],
         },
       },
       {
         index: '02',
-        title: 'Passer du flux au triage',
+        title: 'Cinq outils, un verdict par outil',
         body: [
-          'La timeline plus claire aurait résolu le mauvais problème. La refonte a plutôt regroupé les événements en trois colonnes de gravité (critique, à surveiller, informatif), chacune triable par service affecté — reprenant presque telle quelle la méthode que les agents avaient déjà inventée dans leurs fichiers personnels.',
+          "Écarter Webflow, Framer et Lovable n'est pas un jugement sur leur qualité. Grâce à mon profil technique, je sais m'en servir, et ils peuvent être utiles en freelance pour livrer un produit fini. Mais je me positionne sur le product design : mon but est d'accélérer la conception, pas de la sauter.",
         ],
-        detail: {
-          heading: 'Vue de triage',
-          bullets: [
-            'Trois colonnes de gravité plutôt qu’un flux unique',
-            'Regroupement automatique par service pour repérer les pannes en cascade',
-            'Vues sauvegardées, partageables entre agents d’une même équipe',
+        table: {
+          headers: ['Outil', "Type d'outil", 'Mon verdict'],
+          rows: [
+            [
+              'Figma et ses fonctions IA',
+              'Outil de design avec assistant IA',
+              "Retenu : idéal pour explorer des pistes et créer des prototypes testables. Utilisé aujourd'hui en alternance avec Claude Design",
+            ],
+            [
+              'Webflow',
+              'Création de sites sans code, avec IA',
+              'Très puissant, mais pensé pour livrer un site fini plus que pour concevoir',
+            ],
+            ['Framer', 'Création de sites sans code, avec IA', 'Même constat que pour Webflow'],
+            [
+              'Lovable',
+              "Création d'applications à partir d'une description",
+              'Plus proche du développement que du design',
+            ],
+            [
+              'n8n',
+              'Automatisation',
+              'Retenu : prometteur pour vérifier la qualité des maquettes, essais en cours',
+            ],
           ],
+          chosenRow: 0,
         },
       },
       {
         index: '03',
-        title: 'Tester avec les agents en conditions réelles, pas en salle de réunion',
+        title: "Utiliser l'IA pour vérifier, pas seulement pour créer",
         body: [
-          "Le prototype a été testé directement sur le poste de deux agents volontaires pendant une astreinte réelle, plutôt qu'en session de test isolée. Un ajustement est apparu que les entretiens seuls n'auraient pas révélé : le regroupement par service masquait parfois un pic transverse (plusieurs services touchés par une même cause). Un bandeau de corrélation a été ajouté au-dessus des colonnes pour ce cas précis.",
+          "n8n ne sert pas à créer des maquettes, et c'est ce qui le rend intéressant. Je l'utilise pour faire vérifier un lot d'écrans avant de les relire moi-même : repérer les erreurs grossières pour ne pas y passer de temps pendant la relecture, et vérifier le respect de la charte graphique quand une marque lance un nouveau produit.",
+          "L'IA fait le premier tri. Mon attention reste sur les vraies questions d'expérience.",
         ],
+        detail: {
+          heading: 'Quatre constats, après essais et échanges avec la communauté',
+          bullets: [
+            "Maquetter avec l'IA reste une compétence : c'est le designer qui sait quoi demander, et quoi refuser",
+            "Une maquette ne vaut rien sans test : l'IA accélère la création, pas la validation",
+            "Dans de bonnes mains, l'IA change la donne : le métier se recentre sur le jugement et la méthode",
+            "Il ne faut pas tout miser dessus : prix, fonctionnalités et réglementation dépendent d'entreprises privées",
+          ],
+        },
       },
     ],
     reflection: {
-      label: 'Ce que ce projet a confirmé',
-      text: "Un écran dense n'est pas un problème en soi tant qu'il est organisé selon la façon dont les gens décident, pas selon l'ordre dans lequel les données arrivent. Le bon réflexe design (« simplifier visuellement ») aurait raté le vrai problème, qui était un problème de structure, pas de style.",
+      label: "Ce que j'en retiens",
+      text: 'Une façon de travailler qui reposerait entièrement sur ces outils serait fragile : ils appartiennent à des entreprises privées, les prix peuvent augmenter, des fonctionnalités disparaître, et la réglementation limiter leur usage dans certains secteurs. Je les utilise comme des accélérateurs, en gardant une méthode qui fonctionne aussi sans eux.',
     },
     impact: [
-      { label: 'Temps pour identifier un incident critique', value: '−58 %' },
-      { label: 'Incidents critiques manqués / mois', value: '−80 %' },
-      { label: 'Filtres personnels devenus vues d’équipe', value: '12 → 4 partagées' },
-      { label: 'Agents utilisant la vue quotidiennement', value: '9 / 9' },
+      { label: 'Outils évalués', value: '5' },
+      { label: 'Critères, identiques pour tous', value: '5' },
+      { label: 'Retenus dans ma pratique', value: 'Figma AI, Claude, n8n' },
+      { label: 'Statut', value: 'En cours depuis juin 2026' },
     ],
     closing:
-      "Les fichiers de filtres personnels ont disparu d'eux-mêmes : la méthode que chaque agent avait bricolée seul est devenue l'outil par défaut de toute l'équipe.",
+      "Ce projet prolonge ce que j'avais commencé en mission freelance et m'a permis de clarifier mon positionnement : je choisis des outils qui accélèrent la conception et aident à la vérifier. Les visuels comparatifs — un même parcours créé avec chaque outil — sont en cours de production.",
   },
 ];
 

@@ -4,32 +4,75 @@ export interface ExpertiseArea {
   skills: string[];
 }
 
-/** Grouped so the section reads as capabilities, not a keyword dump. */
+/**
+ * Grouped so the section reads as capabilities, not a keyword dump, and
+ * ordered the way the profile should be read: design first, the technical
+ * background last — it is the differentiator, not the job title.
+ */
 export const expertiseAreas: ExpertiseArea[] = [
   {
-    title: 'Front-end',
-    summary: 'Interfaces accessibles et performantes, pensées comme un système.',
+    title: 'Recherche & discovery',
+    summary: 'Comprendre le problème avant de dessiner, et savoir le prouver.',
     skills: [
-      'TypeScript',
-      'React (hooks, context)',
-      'Next.js (App Router)',
-      'Tailwind CSS',
-      'Design systems',
+      'Entretiens utilisateurs',
+      'Questionnaires',
+      'Personas',
+      'Analyse de parcours (GA, funnels, heatmaps)',
+      'Benchmark concurrentiel',
+      'Audit heuristique',
     ],
   },
   {
-    title: 'Back-end',
-    summary: 'APIs claires, typées et testées, du modèle de données à la sécurité.',
-    skills: ['Node.js', 'Express', 'REST', 'GraphQL', 'OAuth2 / JWT', 'PostgreSQL'],
+    title: 'Conception produit',
+    summary: 'Des parcours qui tiennent debout pour plusieurs profils à la fois.',
+    skills: [
+      "Architecture de l'information",
+      'User flows',
+      'Wireframes & storyboards',
+      'Prototypes interactifs',
+      'Design multi-profils',
+      'Accessibilité (WCAG)',
+    ],
   },
   {
-    title: 'Product & UX',
-    summary: 'De la recherche utilisateur aux décisions produit, avec des livrables actionnables.',
-    skills: ['UX Research', 'Product Design', 'Figma', 'Prototypage', 'Design systems'],
+    title: 'Design systems',
+    summary: "Un socle qui survit à ceux qui l'ont construit, du token à la doc.",
+    skills: [
+      'Design tokens',
+      'Theming multi-clients',
+      'Spécifications de composants',
+      'Figma & Storybook',
+      'Gouvernance et adoption',
+    ],
   },
   {
-    title: 'Qualité & delivery',
-    summary: 'Une base de code qui reste modifiable dans la durée.',
-    skills: ['Vitest', 'Playwright', 'CI/CD', 'Scrum', 'Revue de code', 'Observabilité'],
+    title: 'Validation',
+    summary: 'Décider sur des résultats, pas sur des avis en réunion.',
+    skills: [
+      "Tests d'utilisabilité",
+      'A/B testing',
+      'Mesure avant / après',
+      'Design thinking',
+      "Facilitation d'ateliers",
+      'Agile / Scrum',
+    ],
+  },
+  {
+    title: 'Profil technique',
+    summary:
+      "Je conçois en sachant ce que chaque option coûte à implémenter — et je code quand c'est le plus court chemin.",
+    skills: [
+      'TypeScript',
+      'React',
+      'Next.js',
+      'HTML / CSS',
+      'Material UI',
+      'Spécifications pour code généré par IA',
+    ],
+  },
+  {
+    title: 'Outils',
+    summary: "Ceux que j'utilise au quotidien, IA comprise, avec une méthode qui tient sans eux.",
+    skills: ['Figma', 'Adobe XD', 'Miro', 'Jira', 'Google Analytics', 'Claude', 'n8n'],
   },
 ];

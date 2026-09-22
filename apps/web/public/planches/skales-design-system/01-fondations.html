@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Fondations</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;family=Source+Sans+3:wght@400;600;700&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Inter',system-ui,sans-serif;color:#272625;background:#F2F0EF}
+a{color:#005677}a:hover{color:#00435E}
+button,input,textarea{font-family:inherit}
+svg{flex-shrink:0}
+</style>
+
+</head>
+<body>
+
+<div style="width: 1440px; height: 1912px; box-sizing: border-box; padding: 64px 80px 48px; background: #F2F0EF; display: flex; flex-direction: column; gap: 56px;">
+<header style="display: flex; flex-direction: column; gap: 10px;">
+<div style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 13px; color: #565554;">SKALES DS / Fondations</div>
+<h1 style="margin: 0; font-family: 'Manrope',sans-serif; font-size: 44px; font-weight: 800; line-height: 1.1; color: #272625;">Fondations</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #565554; max-width: 820px;">Palette, rôles de couleur, typographie, espacements et rayons. Les composants ne référencent que ces tokens, jamais de valeur en dur.</p>
+</header><section style="display: flex; flex-direction: column; gap: 22px;">
+<div style="display: flex; flex-direction: column; gap: 6px;"><h2 style="margin: 0; font-family: 'Manrope',sans-serif; font-size: 22px; font-weight: 700; color: #272625;">Palette</h2><p style="margin: 0; font-size: 14px; color: #565554;">Trois couleurs d’origine, déclinées de 50 à 900.</p></div>
+<div style="display: grid; grid-template-columns: 120px repeat(10, minmax(0, 1fr)); gap: 14px; align-items: start;">
+<div style="font-size: 15px; font-weight: 600; padding-top: 26px;">Vert</div>
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #ECFCEB; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-50</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#ECFCEB</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #D7F8D4; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-100</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#D7F8D4</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #B2F4AD; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-200</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#B2F4AD</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #82E87C; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-300</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#82E87C</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #4AD746; border: 1px solid rgba(39,38,37,0.1); box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #272625;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-400</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#4AD746</div><span style="font-size: 11px; font-weight: 600; color: #005677;">Origine</span>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #00B908; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-500</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#00B908</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #009504; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-600</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#009504</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #007604; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-700</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#007604</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #005801; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-800</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#005801</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #004000; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">green-900</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#004000</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 120px repeat(10, minmax(0, 1fr)); gap: 14px; align-items: start;">
+<div style="font-size: 15px; font-weight: 600; padding-top: 26px;">Bleu</div>
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #EDF7FC; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-50</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#EDF7FC</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #D9EDF8; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-100</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#D9EDF8</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #B3DBF1; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-200</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#B3DBF1</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #84C0E1; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-300</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#84C0E1</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #53A3CB; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-400</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#53A3CB</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #2E87B1; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-500</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#2E87B1</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #156F95; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-600</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#156F95</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #005677; border: 1px solid rgba(39,38,37,0.1); box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #272625;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-700</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#005677</div><span style="font-size: 11px; font-weight: 600; color: #005677;">Origine</span>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #00435E; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-800</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#00435E</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #003045; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">blue-900</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#003045</div>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 120px repeat(10, minmax(0, 1fr)); gap: 14px; align-items: start;">
+<div style="font-size: 15px; font-weight: 600; padding-top: 26px;">Neutre</div>
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #FCFAF9; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-50</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#FCFAF9</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #F2F0EF; border: 1px solid rgba(39,38,37,0.1); box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #272625;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-100</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#F2F0EF</div><span style="font-size: 11px; font-weight: 600; color: #005677;">Origine</span>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #DFDDDC; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-200</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#DFDDDC</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #C9C7C6; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-300</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#C9C7C6</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #A9A7A6; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-400</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#A9A7A6</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #8A8988; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-500</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#8A8988</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #706E6D; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-600</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#706E6D</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #565554; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-700</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#565554</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #3E3D3C; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-800</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#3E3D3C</div>
+</div><div style="display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 72px; border-radius: 8px; background: #272625; border: 1px solid rgba(39,38,37,0.1); "></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">neutral-900</span>
+<div style="font-size: 12px; color: #565554; font-variant-numeric: tabular-nums;">#272625</div>
+</div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 22px;">
+<div style="display: flex; flex-direction: column; gap: 6px;"><h2 style="margin: 0; font-family: 'Manrope',sans-serif; font-size: 22px; font-weight: 700; color: #272625;">Rôles et contrastes</h2><p style="margin: 0; font-size: 14px; color: #565554;">Ratios calculés selon les WCAG 2.1 (AA : 4,5:1 pour le texte courant).</p></div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+<div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #005677; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Nouveau projet</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Action principale</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">8,08:1 · AAA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">action/primary</span><span style="font-size: 12px; color: #565554;">bg blue-700 · texte blanc</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #4AD746; color: #272625; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Nouveauté</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Accent</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">7,98:1 · AAA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">accent</span><span style="font-size: 12px; color: #565554;">bg green-400 · texte neutral-900</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #ECFCEB; color: #007604; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Projet actif</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Succès</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">5,48:1 · AA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">feedback/success</span><span style="font-size: 12px; color: #565554;">bg green-50 · texte green-700</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #EDF7FC; color: #005677; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">En configuration</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Information</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">7,43:1 · AAA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">feedback/info</span><span style="font-size: 12px; color: #565554;">bg blue-50 · texte blue-700</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #F2F0EF; color: #272625; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Paramètres du projet</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Texte principal</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">13,30:1 · AAA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">text/primary</span><span style="font-size: 12px; color: #565554;">neutral-900 sur neutral-100</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #FFFFFF; color: #565554; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Modifié il y a 2 jours</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Texte secondaire</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">7,44:1 · AAA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">text/secondary</span><span style="font-size: 12px; color: #565554;">neutral-700 sur blanc</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; ">
+<div style="height: 56px; border-radius: 8px; background: #FFFFFF; color: #C62828; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Licence expirée</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">Erreur</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #ECFCEB; color: #007604; white-space: nowrap;">5,62:1 · AA</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">feedback/error</span><span style="font-size: 12px; color: #565554;">#C62828 sur blanc</span></div>
+</div><div style="background: #FFFFFF; border-radius: 12px; border: 1px solid #DFDDDC; padding: 16px; display: flex; flex-direction: column; gap: 12px; border-color: #C62828;">
+<div style="height: 56px; border-radius: 8px; background: #4AD746; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border: 1px solid rgba(39,38,37,0.08); white-space: nowrap;">Nouveau projet</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600; white-space: nowrap;">À éviter</div>
+<span style="font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #FDECEC; color: #C62828; white-space: nowrap;">1,89:1 · Échec</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #565554;">texte blanc sur green-400</span></div>
+</div>
+</div>
+</section>
+<section style="display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 64px;">
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 6px;"><h2 style="margin: 0; font-family: 'Manrope',sans-serif; font-size: 22px; font-weight: 700; color: #272625;">Typographie</h2><p style="margin: 0; font-size: 14px; color: #565554;">Le système fixe l’échelle et les graisses. Chaque client peut remplacer la famille par une Google Font.</p></div>
+<div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">heading/xl</span><span style="font-size: 12px; color: #565554;">Manrope 40 / 48 · 800</span></div>
+<div style="font-family: 'Manrope',sans-serif; font-size: 40px; font-weight: 800; line-height: 1.2; color: #272625; white-space: nowrap;">Titre de page</div>
+</div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">heading/lg</span><span style="font-size: 12px; color: #565554;">Manrope 32 / 40 · 700</span></div>
+<div style="font-family: 'Manrope',sans-serif; font-size: 32px; font-weight: 700; line-height: 1.25; color: #272625; white-space: nowrap;">Titre de section</div>
+</div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">heading/md</span><span style="font-size: 12px; color: #565554;">Manrope 24 / 32 · 700</span></div>
+<div style="font-family: 'Manrope',sans-serif; font-size: 24px; font-weight: 700; line-height: 1.33; color: #272625; white-space: nowrap;">Titre de carte</div>
+</div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">heading/sm</span><span style="font-size: 12px; color: #565554;">Manrope 20 / 28 · 600</span></div>
+<div style="font-family: 'Manrope',sans-serif; font-size: 20px; font-weight: 600; line-height: 1.4; color: #272625; white-space: nowrap;">Sous-titre</div>
+</div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">body/md</span><span style="font-size: 12px; color: #565554;">Inter 16 / 24 · 400</span></div>
+<div style="font-family: 'Inter',sans-serif; font-size: 16px; font-weight: 400; line-height: 1.5; color: #272625; white-space: nowrap;">Texte courant de l'interface.</div>
+</div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">body/sm</span><span style="font-size: 12px; color: #565554;">Inter 14 / 20 · 500</span></div>
+<div style="font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 500; line-height: 1.43; color: #272625; white-space: nowrap;">Libellé de champ, cellule de tableau</div>
+</div><div style="display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; padding: 12px 0; border-bottom: 1px solid #DFDDDC;">
+<div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">caption</span><span style="font-size: 12px; color: #565554;">Inter 12 / 16 · 500</span></div>
+<div style="font-family: 'Inter',sans-serif; font-size: 12px; font-weight: 500; line-height: 1.33; color: #272625; white-space: nowrap;">Légende, métadonnée</div>
+</div></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 40px;">
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 6px;"><h2 style="margin: 0; font-family: 'Manrope',sans-serif; font-size: 22px; font-weight: 700; color: #272625;">Espacements</h2><p style="margin: 0; font-size: 14px; color: #565554;">Grille de 4 px.</p></div>
+<div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-1</span><span style="font-size: 12px; color: #565554;">4 px</span>
+<div style="width: 12px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-2</span><span style="font-size: 12px; color: #565554;">8 px</span>
+<div style="width: 24px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-3</span><span style="font-size: 12px; color: #565554;">12 px</span>
+<div style="width: 36px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-4</span><span style="font-size: 12px; color: #565554;">16 px</span>
+<div style="width: 48px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-5</span><span style="font-size: 12px; color: #565554;">24 px</span>
+<div style="width: 72px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-6</span><span style="font-size: 12px; color: #565554;">32 px</span>
+<div style="width: 96px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-7</span><span style="font-size: 12px; color: #565554;">48 px</span>
+<div style="width: 144px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div><div style="display: grid; grid-template-columns: 76px 44px minmax(0, 1fr); align-items: center; gap: 8px;">
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">space-8</span><span style="font-size: 12px; color: #565554;">64 px</span>
+<div style="width: 192px; height: 10px; border-radius: 2px; background: #53A3CB;"></div>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 6px;"><h2 style="margin: 0; font-family: 'Manrope',sans-serif; font-size: 22px; font-weight: 700; color: #272625;">Rayons</h2></div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;"><div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="height: 56px; background: #FFFFFF; border: 2px solid #005677; border-radius: 4px;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">radius-sm</span><span style="font-size: 12px; color: #565554;">4 · champs</span>
+</div><div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="height: 56px; background: #FFFFFF; border: 2px solid #005677; border-radius: 8px;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">radius-md</span><span style="font-size: 12px; color: #565554;">8 · boutons</span>
+</div><div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="height: 56px; background: #FFFFFF; border: 2px solid #005677; border-radius: 12px;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">radius-lg</span><span style="font-size: 12px; color: #565554;">12 · cartes</span>
+</div><div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="height: 56px; background: #FFFFFF; border: 2px solid #005677; border-radius: 999px;"></div>
+<span style="font-family: 'JetBrains Mono',ui-monospace,monospace; font-size: 12px; color: #272625; white-space: nowrap;">radius-full</span><span style="font-size: 12px; color: #565554;">pilule · statuts</span>
+</div></div>
+</div>
+</div>
+</section>
+<footer style="margin-top: auto; padding-top: 20px; border-top: 1px solid #DFDDDC; display: flex; justify-content: space-between; font-size: 12px; color: #565554;">
+<span>SKALES Design System</span>
+<span>Reconstitution 2026 d'après la documentation d'origine</span>
+</footer>
+</div>
+
+</body>
+</html>

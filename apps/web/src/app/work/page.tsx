@@ -17,14 +17,14 @@ export default function WorkIndexPage() {
       <main id="content">
         <section className="py-16 sm:py-24">
           <Container>
-            <p className="eyebrow text-accent">Tous les projets</p>
-            <h1 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">Projets</h1>
-            <p className="mt-4 max-w-2xl text-muted">
+            <p className="eyebrow text-accent-text dark:text-accent">Tous les projets</p>
+            <h1 className="display-xl mt-4 font-display">Projets</h1>
+            <p className="mt-6 max-w-2xl text-muted sm:text-lg">
               Chaque étude de cas revient sur le problème posé, la démarche suivie et ce qui a
               changé — pas seulement le résultat final.
             </p>
 
-            <ul className="mt-12 space-y-6">
+            <ul className="mt-16">
               {caseStudies.map((study) => (
                 <CaseStudyCard key={study.slug} study={study} />
               ))}
