@@ -2,6 +2,11 @@
 # Run from the repo root: docker compose -f infra/compose.prod.yaml up -d --build
 # Expects infra/.env to exist (copy infra/prod.env.example) and DNS for
 # alexandregiraud.tech / www / api already pointed at this host.
+#
+# TLS + reverse proxy are handled by the Traefik instance already running on
+# this VPS for other services (network_mode: host, Docker label discovery,
+# cert resolver "letsencrypt") — this stack does not run its own proxy, it
+# just exposes labels for that Traefik to pick up. See docs/deployment.md.
 
 name: portfolio-prod
 
@@ -34,6 +39,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portfolio-api.rule=Host(`api.alexandregiraud.tech`)
+      - traefik.http.routers.portfolio-api.entrypoints=websecure
+      - traefik.http.routers.portfolio-api.tls.certresolver=letsencrypt
+      - traefik.http.services.portfolio-api.loadbalancer.server.port=4000
 
   web:
     build:
@@ -44,22 +55,12 @@ services:
     restart: unless-stopped
     depends_on:
       - api
-
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
-    depends_on:
-      - web
-      - api
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portfolio-web.rule=Host(`alexandregiraud.tech`) || Host(`www.alexandregiraud.tech`)
+      - traefik.http.routers.portfolio-web.entrypoints=websecure
+      - traefik.http.routers.portfolio-web.tls.certresolver=letsencrypt
+      - traefik.http.services.portfolio-web.loadbalancer.server.port=3000
 
 volumes:
   postgres-data:
-  caddy-data:
-  caddy-config:

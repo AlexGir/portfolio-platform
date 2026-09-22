@@ -6,6 +6,24 @@ this project follows [Semantic Versioning](https://semver.org/) once it reaches 
 
 ## [Unreleased]
 
+### Changed — Infra: integrate with the VPS's existing Traefik
+
+- The Hostinger VPS already runs a shared Traefik instance for other Docker
+  projects (`network_mode: host`, labels-based discovery, `letsencrypt` cert
+  resolver on port 80/443) — discovered when `caddy` failed to bind port 80
+  during the first real deploy.
+- Removed the `caddy` service and `infra/Caddyfile` from
+  `infra/compose.prod.yaml`; `web` and `api` now carry Traefik labels
+  (`traefik.enable`, host rule, `websecure` entrypoint, `letsencrypt`
+  certresolver) instead, the same pattern already used by the VPS's other
+  services. No new Docker network needed — a host-networked Traefik can reach
+  any container's bridge-network IP directly.
+- `docs/deployment.md` updated to describe the Traefik integration instead of
+  a dedicated reverse proxy.
+- Also made the GitHub repository **public** (was private) so the VPS can
+  `git clone`/`git pull` over HTTPS without a token or deploy key — verified
+  no secrets are or were ever committed (`.env` always git-ignored).
+
 ### Added — Editorial redesign & case studies (`apps/web`) · PR #6
 
 - Visual identity overhaul inspired by editorial product-design portfolios
