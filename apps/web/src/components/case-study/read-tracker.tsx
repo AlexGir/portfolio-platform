@@ -31,5 +31,8 @@ export function ReadTracker({ slug }: { slug: string }) {
     return () => observer.disconnect();
   }, [slug]);
 
-  return <div ref={sentinel} aria-hidden="true" />;
+  // 1px de haut et pas zero : un element d'aire nulle est un cas limite de
+  // l'IntersectionObserver, dont le comportement varie selon les moteurs.
+  // Invisible a l'oeil, sans effet sur la mise en page.
+  return <div ref={sentinel} aria-hidden="true" className="h-px w-full" />;
 }
