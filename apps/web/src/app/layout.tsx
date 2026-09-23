@@ -4,6 +4,7 @@ import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeScript } from '@/components/theme-script';
 import { AuthProvider } from '@/lib/auth-context';
+import { Analytics } from '@/components/analytics';
 import { profile } from '@/content/profile';
 
 const sans = Inter({
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Aller au contenu
         </a>
         <AuthProvider>{children}</AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -131,7 +131,68 @@ curl -i -X POST https://api.alexandregiraud.tech/contact \
 Réponse attendue : `202` avec `{"status":"sent"}`, et le mail dans la boîte de
 réception. Le point d'entrée est limité à **5 messages par heure et par IP**.
 
-## 6. Sauvegardes
+## 6. Mesure d'audience (Umami)
+
+Umami est auto-hébergé sur ce VPS, avec **sa propre base Postgres** (`umami-db`)
+plutôt qu'une base supplémentaire dans celle du portfolio : un historique
+d'audience ne se regénère pas, et le volume `portfolio-prod_postgres-data` a
+déjà dû être effacé une fois.
+
+### Mise en place (une seule fois)
+
+1. **DNS** : enregistrement `A` pour `analytics` vers l'IP du VPS.
+2. **Secrets**, générés directement dans le fichier pour qu'ils n'apparaissent ni
+   à l'écran ni dans l'historique shell :
+
+```bash
+cd /opt/portfolio-platform/infra && { echo "UMAMI_DB_PASSWORD=$(openssl rand -hex 24)";   echo "UMAMI_APP_SECRET=$(openssl rand -hex 32)"; } >> .env && chmod 600 .env
+```
+
+`-hex` et pas `-base64` : un `/` dans le mot de passe casse la chaîne de
+connexion Postgres (incident déjà rencontré ici).
+
+3. Déployer (push sur `main`, ou `docker compose -f infra/compose.prod.yaml up -d`).
+4. Ouvrir <https://analytics.alexandregiraud.tech>. **Identifiants par défaut :
+   `admin` / `umami` — à changer immédiatement**, l'instance est publique.
+5. _Settings → Websites → Add website_ : domaine `alexandregiraud.tech`. Copier
+   l'identifiant généré.
+6. Renseigner `NEXT_PUBLIC_UMAMI_WEBSITE_ID` dans `infra/.env`, puis reconstruire
+   l'image web — ces variables sont **inlinées au build**, un simple redémarrage
+   ne suffit pas :
+
+```bash
+cd /opt/portfolio-platform && docker compose -f infra/compose.prod.yaml up -d --build web
+```
+
+Tant que l'identifiant est vide, `<Analytics />` ne rend rien : le site n'émet
+aucun appel de suivi.
+
+### Pas de bandeau de consentement, et pourquoi
+
+Dans cette configuration, aucun cookie n'est posé, l'instance nous appartient,
+rien n'est transmis à un tiers et il n'y a pas de suivi inter-sites — les
+critères que la CNIL demande d'auto-évaluer depuis janvier 2026 pour l'exemption
+de consentement. `DISABLE_TELEMETRY=1` coupe aussi la remontée d'usage vers les
+auteurs d'Umami, pour que les statistiques soient produites « pour le compte
+exclusif de l'éditeur ».
+
+**Activer le session replay ou les heatmaps sortirait de ce cadre** : ces
+fonctions enregistrent les interactions et peuvent capter des données
+personnelles. Le bandeau redeviendrait obligatoire. Les laisser désactivées est
+un choix délibéré, pas un oubli.
+
+### Limite connue
+
+Les bloqueurs de publicité filtrent une partie des scripts d'analytics, y compris
+auto-hébergés. Une fraction des visiteurs ne sera pas comptée — c'est vrai de
+toute solution, GA comprise, et dans des proportions plus fortes pour elle.
+
+### Sauvegarde
+
+Le volume `portfolio-prod_umami-data` contient tout l'historique. L'inclure dans
+la routine de sauvegarde décrite ci-dessous.
+
+## 7. Sauvegardes
 
 `postgres-data` est un volume Docker nommé — inclure `docker run --rm -v
 portfolio-prod_postgres-data:/data -v $PWD:/backup alpine tar czf

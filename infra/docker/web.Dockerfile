@@ -22,6 +22,10 @@ COPY --from=pruner /app/out/full/ .
 # Inlined into the client bundle at build time — safe to bake in, it is not a secret.
 ARG NEXT_PUBLIC_API_URL=https://api.alexandregiraud.tech
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_UMAMI_SRC=
+ENV NEXT_PUBLIC_UMAMI_SRC=$NEXT_PUBLIC_UMAMI_SRC
+ARG NEXT_PUBLIC_UMAMI_WEBSITE_ID=
+ENV NEXT_PUBLIC_UMAMI_WEBSITE_ID=$NEXT_PUBLIC_UMAMI_WEBSITE_ID
 
 RUN pnpm turbo run build --filter=@portfolio/web
 
