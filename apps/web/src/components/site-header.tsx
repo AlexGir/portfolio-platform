@@ -42,6 +42,8 @@ export function SiteHeader() {
             href={profile.resume.href}
             target="_blank"
             rel="noreferrer"
+            data-umami-event="cv-ouvert"
+            data-umami-event-source="header"
             className="eyebrow bg-accent-strong px-3.5 py-2 text-accent-fg transition-transform duration-200 hover:-translate-y-0.5"
           >
             CV ↗
@@ -86,6 +88,8 @@ export function SiteHeader() {
               target="_blank"
               rel="noreferrer"
               onClick={() => setOpen(false)}
+              data-umami-event="cv-ouvert"
+              data-umami-event-source="menu-mobile"
               className="py-2 text-sm font-medium text-accent"
             >
               Voir mon CV ↗

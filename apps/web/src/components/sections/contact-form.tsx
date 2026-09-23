@@ -4,6 +4,7 @@ import { useId, useState } from 'react';
 import { contactMessageSchema, type ContactResponse } from '@portfolio/shared';
 import { ApiError, apiFetch } from '@/lib/api';
 import { profile } from '@/content/profile';
+import { trackEvent } from '@/lib/umami';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
@@ -52,6 +53,10 @@ export function ContactForm() {
       });
       setStatus('sent');
       form.reset();
+      // Via l'API JS et non un attribut : on mesure l'envoi *reussi*, pas le
+      // clic. L'attribut data-umami-event interfere par ailleurs avec les
+      // gestionnaires d'evenements internes, ce qui casserait la soumission.
+      trackEvent('contact-envoye');
     } catch (cause) {
       setStatus('error');
       if (cause instanceof ApiError && cause.code === 'contact_unavailable') {

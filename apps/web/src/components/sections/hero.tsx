@@ -54,6 +54,7 @@ export function Hero() {
             >
               <a
                 href="#work"
+                data-umami-event="cta-projets"
                 className="bg-accent-strong px-6 py-3 text-sm font-medium text-accent-fg transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Voir mes études de cas
@@ -62,6 +63,8 @@ export function Hero() {
                 href={profile.resume.href}
                 target="_blank"
                 rel="noreferrer"
+                data-umami-event="cv-ouvert"
+                data-umami-event-source="hero"
                 className="border-b-2 border-rule pb-1 text-sm font-medium transition-colors hover:border-accent hover:text-accent-text dark:hover:text-accent"
               >
                 Voir mon CV ↗

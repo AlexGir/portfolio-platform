@@ -26,6 +26,8 @@ export function BoardFigure({ board }: { board: Board }) {
         target="_blank"
         rel="noreferrer"
         aria-label={`Ouvrir la planche « ${board.title} » en grand format`}
+        data-umami-event="planche-ouverte"
+        data-umami-event-planche={board.title}
         className="group block overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-accent focus-visible:border-accent"
       >
         {/*

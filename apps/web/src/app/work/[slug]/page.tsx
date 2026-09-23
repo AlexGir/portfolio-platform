@@ -10,6 +10,7 @@ import { ReflectionCallout } from '@/components/case-study/reflection-callout';
 import { ImpactGrid } from '@/components/case-study/impact-grid';
 import { CaseStudyNav } from '@/components/case-study/case-study-nav';
 import { BoardGallery } from '@/components/case-study/board-figure';
+import { ReadTracker } from '@/components/case-study/read-tracker';
 import { caseStudies, getCaseStudy } from '@/content/case-studies';
 
 type Params = Promise<{ slug: string }>;
@@ -139,6 +140,8 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
               </div>
               <p className="mt-10 max-w-2xl leading-relaxed text-fg/85">{study.closing}</p>
             </div>
+
+            <ReadTracker slug={study.slug} />
 
             <div className="mt-16">
               <CaseStudyNav previous={previous} next={next} />
