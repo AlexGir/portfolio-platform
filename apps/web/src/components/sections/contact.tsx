@@ -13,6 +13,8 @@ export function Contact() {
             <p className="eyebrow text-muted">Direct</p>
             <a
               href={`mailto:${profile.email}`}
+              data-umami-event="email-clique"
+              data-umami-event-source="contact"
               className="mt-2 block break-words text-sm transition-colors hover:text-accent-text dark:hover:text-accent"
             >
               {profile.email}
@@ -28,6 +30,9 @@ export function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noreferrer"
+                    data-umami-event="reseau-ouvert"
+                    data-umami-event-reseau={social.label}
+                    data-umami-event-source="contact"
                     className="text-sm transition-colors hover:text-accent-text dark:hover:text-accent"
                   >
                     {social.label} ↗
@@ -43,6 +48,8 @@ export function Contact() {
               href={profile.resume.href}
               target="_blank"
               rel="noreferrer"
+              data-umami-event="cv-ouvert"
+              data-umami-event-source="contact"
               className="mt-2 block text-sm transition-colors hover:text-accent-text dark:hover:text-accent"
             >
               PDF · mis à jour {profile.resume.updated} ↗

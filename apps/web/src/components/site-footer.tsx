@@ -15,19 +15,34 @@ export function SiteFooter() {
               className="hover:text-fg"
               target="_blank"
               rel="noreferrer"
+              data-umami-event="cv-ouvert"
+              data-umami-event-source="pied-de-page"
             >
               CV
             </a>
           </li>
           {profile.socials.map((social) => (
             <li key={social.href}>
-              <a href={social.href} className="hover:text-fg" rel="me noreferrer" target="_blank">
+              <a
+                href={social.href}
+                className="hover:text-fg"
+                rel="me noreferrer"
+                target="_blank"
+                data-umami-event="reseau-ouvert"
+                data-umami-event-reseau={social.label}
+                data-umami-event-source="pied-de-page"
+              >
                 {social.label}
               </a>
             </li>
           ))}
           <li>
-            <a href={`mailto:${profile.email}`} className="hover:text-fg">
+            <a
+              href={`mailto:${profile.email}`}
+              className="hover:text-fg"
+              data-umami-event="email-clique"
+              data-umami-event-source="pied-de-page"
+            >
               Email
             </a>
           </li>
