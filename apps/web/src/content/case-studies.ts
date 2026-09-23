@@ -107,7 +107,7 @@ export const caseStudies: CaseStudy[] = [
     coverImage: '/planches/skales-refonte/02-personas.png',
     meta: {
       client: 'SKALES — plateforme de gestion de projets',
-      role: "Seul Product Designer de l'entreprise, de l'audit (stage) au pilotage du design produit (CDI)",
+      role: "Responsable du design produit de l'entreprise, de l'audit (stage) au pilotage du design produit (CDI)",
       timeline: 'Septembre 2020 — mai 2025',
       whatChanged:
         'Une interface réservée à des experts devenue vendable à des clients sans bagage technique',
@@ -439,7 +439,7 @@ export const caseStudies: CaseStudy[] = [
     coverImage: '/planches/marketplace-closers/05-matchmaking-mobile.png',
     meta: {
       client: 'Start-up du closing freelance (confidentiel, pré-lancement)',
-      role: 'Product Designer freelance, seul designer du projet',
+      role: 'Product Designer freelance, en charge de toute la conception',
       timeline: 'Deux phases de trois mois en 2026, reconduite après la première',
       whatChanged:
         'Une interface validée par des tests avant le lancement, plutôt que corrigée après',
@@ -567,7 +567,7 @@ export const caseStudies: CaseStudy[] = [
     readingTime: '4 min',
     cover: { variant: 'signal', primary: '#3b3f8f', secondary: '#b8451f' },
     meta: {
-      client: 'Projet personnel, mené seul',
+      client: 'Projet personnel de veille et d’expérimentation',
       role: 'Conception du protocole, tests, synthèse',
       timeline: 'Depuis juin 2026, en cours',
       whatChanged: 'Un positionnement outillé et argumenté, au lieu d’un avis de principe sur l’IA',
