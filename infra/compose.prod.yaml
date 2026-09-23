@@ -1,7 +1,7 @@
 # Production stack for the Hostinger VPS.
 # Run from the repo root: docker compose -f infra/compose.prod.yaml up -d --build
 # Expects infra/.env to exist (copy infra/prod.env.example) and DNS for
-# alexandregiraud.tech / www / api already pointed at this host.
+# alexandregiraud.tech / www / api / analytics already pointed at this host.
 #
 # TLS + reverse proxy are handled by the Traefik instance already running on
 # this VPS for other services (network_mode: host, Docker label discovery,
@@ -52,6 +52,10 @@ services:
       dockerfile: infra/docker/web.Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.alexandregiraud.tech}
+        # Inlines dans le bundle client au build. Vides tant qu'Umami
+        # n'est pas configure : le site fonctionne sans, sans appel reseau.
+        NEXT_PUBLIC_UMAMI_SRC: ${NEXT_PUBLIC_UMAMI_SRC:-}
+        NEXT_PUBLIC_UMAMI_WEBSITE_ID: ${NEXT_PUBLIC_UMAMI_WEBSITE_ID:-}
     restart: unless-stopped
     depends_on:
       - api
@@ -62,5 +66,51 @@ services:
       - traefik.http.routers.portfolio-web.tls.certresolver=letsencrypt
       - traefik.http.services.portfolio-web.loadbalancer.server.port=3000
 
+  # --- Mesure d'audience (Umami) -------------------------------------------
+  # Base dediee plutot qu'une base de plus dans le Postgres du portfolio :
+  # l'historique d'audience ne se regenere pas, et le volume de ce Postgres-la
+  # a deja du etre efface une fois (incident POSTGRES_PASSWORD). Isoler coute
+  # ~30 Mo de RAM sur les 6,4 Go disponibles.
+  umami-db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${UMAMI_DB_PASSWORD:?set UMAMI_DB_PASSWORD in infra/.env (openssl rand -hex 24)}
+      POSTGRES_DB: umami
+    volumes:
+      - umami-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U umami']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  umami:
+    # Version epinglee : la CI relance `up -d` a chaque push sur main, et un tag
+    # `latest` laisserait une montee de version non voulue passer avec.
+    # Verifie : ghcr.io/umami-software/umami:3.4.0 a le meme manifeste que
+    # postgresql-latest, c'est donc bien la variante PostgreSQL.
+    image: ghcr.io/umami-software/umami:3.4.0
+    restart: unless-stopped
+    environment:
+      DATABASE_TYPE: postgresql
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD}@umami-db:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET:?set UMAMI_APP_SECRET in infra/.env (openssl rand -hex 32)}
+      # Umami remonte par defaut des donnees d'usage anonymes a ses auteurs.
+      # On coupe : le critere d'exemption CNIL demande des statistiques
+      # produites "pour le compte exclusif de l'editeur".
+      DISABLE_TELEMETRY: '1'
+    depends_on:
+      umami-db:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.portfolio-umami.rule=Host(`analytics.alexandregiraud.tech`)
+      - traefik.http.routers.portfolio-umami.entrypoints=websecure
+      - traefik.http.routers.portfolio-umami.tls.certresolver=letsencrypt
+      - traefik.http.services.portfolio-umami.loadbalancer.server.port=3000
+
 volumes:
   postgres-data:
+  umami-data:
