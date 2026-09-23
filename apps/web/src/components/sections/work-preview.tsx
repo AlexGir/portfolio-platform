@@ -10,7 +10,7 @@ export function WorkPreview() {
       id="work"
       eyebrow="Sélection"
       title="Projets"
-      lead="Quatre études de cas détaillées : le problème posé, les options écartées, ce qui a été testé, et ce qui a changé. Livrables réels à l'appui."
+      lead="Quatre études de cas détaillées : le problème posé, les options écartées, ce qui a été testé, et ce qui a changé. Livrables réels à l'appui."
     >
       <ul>
         {caseStudies.map((study) => (

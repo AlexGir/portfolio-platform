@@ -31,12 +31,12 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: `${profile.name} — ${profile.role}`,
-    template: `%s — ${profile.name}`,
+    default: `${profile.name} | ${profile.role}`,
+    template: `%s | ${profile.name}`,
   },
   description: profile.tagline,
   openGraph: {
-    title: `${profile.name} — ${profile.role}`,
+    title: `${profile.name} | ${profile.role}`,
     description: profile.tagline,
     type: 'website',
   },

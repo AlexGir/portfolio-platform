@@ -69,6 +69,29 @@
     text-wrap: pretty;
   }
 
+  /*
+   * Cesure automatique sur les ecrans etroits uniquement.
+   *
+   * Sous 640px une ligne fait 35 a 45 caracteres : sans cesure, un mot long
+   * ("personnalisables", "recommandations") laisse un trou beant en fin de
+   * ligne. Au-dela, la mesure est assez large pour que le drapeau soit propre
+   * sans couper les mots, et des cesures y seraient du bruit.
+   *
+   * `lang="fr"` sur <html> fournit au navigateur le bon dictionnaire.
+   * Le texte n'est jamais justifie : sans controle fin de la cesure, la
+   * justification cree des rivieres blanches.
+   */
+  @media (max-width: 639px) {
+    p,
+    li,
+    dd,
+    blockquote,
+    figcaption {
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-accent-strong);
     outline-offset: 3px;
