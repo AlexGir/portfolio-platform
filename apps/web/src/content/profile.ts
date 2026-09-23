@@ -38,9 +38,9 @@ export const profile: Profile = {
   tagline:
     "Je cherche d'abord pourquoi les gens décrochent. Les écrans viennent après, et ils sont testés avant d'être livrés.",
   bio: [
-    "Product Designer avec près de 5 ans d'expérience sur des produits SaaS B2B, de la modélisation des workflows jusqu'à la livraison des écrans et des user stories. Recherche utilisateur, conception d'interfaces, design systems : j'interviens sur toute la chaîne.",
+    "Product Designer avec près de 5 ans d'expérience sur des produits SaaS B2B, de la modélisation des workflows jusqu'à la livraison des écrans et des user stories. Recherche utilisateur, conception d'interfaces, design systems : j'interviens sur toute la chaîne.",
     "Chez SKALES, j'ai créé et porté la fonction design de l'entreprise. J'ai piloté la refonte complète d'une plateforme de gestion de projets utilisée en R&D, en santé et dans l'innovation, et créé le design system qui est devenu le socle de tous ses produits. Depuis juin 2025, je travaille en freelance et sur mes propres projets.",
-    "Mon parcours en informatique (Master Informatique et Design d'Interfaces, Paris-Saclay) change la façon dont je conçois : je sais ce que chaque option coûte à implémenter, je dialogue d'égal à égal avec les développeurs, et je vais coder moi-même les composants quand c'est le plus court chemin. Ce site en est un exemple — je l'ai conçu et développé de bout en bout.",
+    "Mon parcours en informatique (Master Informatique et Design d'Interfaces, Paris-Saclay) change la façon dont je conçois : je sais ce que chaque option coûte à implémenter, je dialogue d'égal à égal avec les développeurs, et je vais coder moi-même les composants quand c'est le plus court chemin. Ce site en est un exemple : je l'ai conçu et développé de bout en bout.",
   ],
   email: 'alexandre.giraud1995@gmail.com',
   socials: [
@@ -52,5 +52,5 @@ export const profile: Profile = {
     updated: 'Septembre 2026',
   },
   availability:
-    "Ouvert aux opportunités Product Designer en CDI, en Île-de-France ou à distance — ma priorité aujourd'hui. Également disponible pour des missions freelance.",
+    "Ouvert aux opportunités Product Designer en CDI, en Île-de-France ou à distance, et c'est ma priorité aujourd'hui. Également disponible pour des missions freelance.",
 };

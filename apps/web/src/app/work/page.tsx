@@ -7,7 +7,7 @@ import { caseStudies } from '@/content/case-studies';
 
 export const metadata: Metadata = {
   title: 'Projets',
-  description: "L'ensemble des études de cas : contexte, démarche et résultats.",
+  description: "L'ensemble des études de cas : contexte, démarche et résultats.",
 };
 
 export default function WorkIndexPage() {
@@ -21,7 +21,7 @@ export default function WorkIndexPage() {
             <h1 className="display-xl mt-4 font-display">Projets</h1>
             <p className="mt-6 max-w-2xl text-muted sm:text-lg">
               Chaque étude de cas revient sur le problème posé, la démarche suivie et ce qui a
-              changé — pas seulement le résultat final.
+              changé, pas seulement le résultat final.
             </p>
 
             <ul className="mt-16">

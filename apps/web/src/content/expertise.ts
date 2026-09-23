@@ -60,7 +60,7 @@ export const expertiseAreas: ExpertiseArea[] = [
   {
     title: 'Profil technique',
     summary:
-      "Je conçois en sachant ce que chaque option coûte à implémenter — et je code quand c'est le plus court chemin.",
+      "Je conçois en sachant ce que chaque option coûte à implémenter, et je code quand c'est le plus court chemin.",
     skills: [
       'TypeScript',
       'React',

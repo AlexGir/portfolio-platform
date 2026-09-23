@@ -75,8 +75,8 @@ export function BoardGallery({ boards, note = false }: { boards: Board[]; note?:
       ))}
       {note ? (
         <p className="mt-6 max-w-2xl text-xs text-muted">
-          Planches reconstituées en 2026 à partir des livrables originaux — ceux-ci appartiennent
-          aux clients. Les contenus sensibles sont anonymisés.
+          Planches reconstituées en 2026 à partir des livrables originaux, qui appartiennent aux
+          clients. Les contenus sensibles sont anonymisés.
         </p>
       ) : null}
     </div>

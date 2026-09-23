@@ -32,7 +32,7 @@ export function ProcessStep({ step }: { step: ProcessStepData }) {
               {step.detail.bullets.map((bullet, i) => (
                 <li key={i} className="flex gap-3">
                   <span className="text-accent" aria-hidden="true">
-                    —
+                    ·
                   </span>
                   <span>{bullet}</span>
                 </li>
