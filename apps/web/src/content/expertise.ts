@@ -60,14 +60,14 @@ export const expertiseAreas: ExpertiseArea[] = [
   {
     title: 'Profil technique',
     summary:
-      "Je conçois en sachant ce que chaque option coûte à implémenter, et je code quand c'est le plus court chemin.",
+      "Je conçois en sachant ce qu'une option coûte à implémenter et ce qu'une modification coûte à reprendre.",
     skills: [
       'TypeScript',
       'React',
       'Next.js',
       'HTML / CSS',
       'Material UI',
-      'Spécifications pour code généré par IA',
+      'Handoff et spécifications techniques',
     ],
   },
   {

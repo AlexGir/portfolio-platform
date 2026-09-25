@@ -4,7 +4,7 @@ import { profile } from '@/content/profile';
 /** The credentials a recruiter looks for, above the fold, without a scroll. */
 const CREDENTIALS = [
   '~5 ans en SaaS B2B',
-  'Fonction design créée de zéro',
+  'Responsable design produit',
   'Master Informatique & Design d’Interfaces',
   'Google UX Design Certificate',
 ];

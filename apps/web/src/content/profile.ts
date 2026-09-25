@@ -36,17 +36,14 @@ export const profile: Profile = {
   role: 'Product Designer · SaaS B2B',
   location: 'Île-de-France · télétravail',
   tagline:
-    "Je cherche d'abord pourquoi les gens décrochent. Les écrans viennent après, et ils sont testés avant d'être livrés.",
+    "Je transforme des outils métier complexes en produits qu'on prend en main sans formation. De la recherche utilisateur aux écrans livrés.",
   bio: [
     "Product Designer avec près de 5 ans d'expérience sur des produits SaaS B2B, de la modélisation des workflows jusqu'à la livraison des écrans et des user stories. Recherche utilisateur, conception d'interfaces, design systems : j'interviens sur toute la chaîne.",
-    "Chez SKALES, j'ai créé et porté la fonction design de l'entreprise. J'ai piloté la refonte complète d'une plateforme de gestion de projets utilisée en R&D, en santé et dans l'innovation, et créé le design system qui est devenu le socle de tous ses produits. Depuis juin 2025, je travaille en freelance et sur mes propres projets.",
-    "Mon parcours en informatique (Master Informatique et Design d'Interfaces, Paris-Saclay) change la façon dont je conçois : je sais ce que chaque option coûte à implémenter, je dialogue d'égal à égal avec les développeurs, et je vais coder moi-même les composants quand c'est le plus court chemin. Ce site en est un exemple : je l'ai conçu et développé de bout en bout.",
+    "Chez SKALES, j'étais responsable du design produit de l'entreprise. J'ai piloté la refonte complète d'une plateforme de gestion de projets utilisée en R&D, en santé et dans l'innovation, et construit le design system devenu le socle de tous ses produits. Depuis juin 2025, je travaille en freelance et sur mes propres projets.",
+    "Mon parcours en informatique (Master Informatique et Design d'Interfaces, Paris-Saclay) change la façon dont je conçois : je sais ce qu'une option coûte à implémenter et ce qu'une modification coûte à reprendre, j'arbitre plus tôt entre l'idéal et le faisable, et je dialogue d'égal à égal avec les équipes de développement.",
   ],
   email: 'alexandre.giraud1995@gmail.com',
-  socials: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/alexandre-giraud-072624142' },
-    { label: 'GitHub', href: 'https://github.com/AlexGir' },
-  ],
+  socials: [{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/alexandre-giraud-072624142' }],
   resume: {
     href: '/cv-alexandre-giraud-product-designer.pdf',
     updated: 'Septembre 2026',
