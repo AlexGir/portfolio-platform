@@ -2,48 +2,179 @@
 
 /* Dark mode driven by a `.dark` class on <html> (set by ThemeScript). */
 @custom-variant dark (&:where(.dark, .dark *));
-
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   /*
-   * Warm paper + near-black + one saturated red. The red exists in three roles
-   * rather than one value, because a single #e8442a cannot be accessible
-   * everywhere: white text on it is only 3.97:1. Same reasoning as the SKALES
-   * colour roles in the design-system case study — give a brand colour the job
-   * it can actually do, don't water it down.
+   * Cool near-white, near-black, and an electric violet. The violet exists in
+   * three roles rather than one value: no single tone is accessible in every
+   * context, so each gets the job it can actually do. Same reasoning as the
+   * SKALES colour roles in the design-system case study. Every ratio below was
+   * measured, not estimated.
    */
-  --color-bg: #f7f4ed;
-  --color-fg: #121212;
-  --color-muted: #6b6560;
-  --color-border: #ded5c4;
-  --color-rule: #121212;
-  --color-surface: #efeae0;
+  --color-bg: #f4f3f7;
+  --color-fg: #0a0a0f;
+  --color-muted: #5b5966; /* 6.2:1 on the stock */
+  --color-border: #dcd9e6;
+  --color-rule: #0a0a0f;
+  --color-surface: #eae8f2;
 
-  /* Display only: large type, rules, marks. Never small text on paper. */
-  --color-accent: #e8442a;
-  /* Solid interactive surfaces — white text on it is 4.84:1. */
-  --color-accent-strong: #d13a1e;
-  /* Small accent text on paper — 5.18:1. */
-  --color-accent-text: #be3417;
+  --color-accent: #5928ff; /* display, and usable beyond it — 6.62:1 with white */
+  --color-accent-strong: #4a1ae0; /* solid surfaces carrying text — 8.35:1 with white */
+  --color-accent-text: #4718cc; /* small text on the stock — 8.37:1 */
   --color-accent-fg: #ffffff;
+
+  /*
+   * Four rotating inks for the expertise counters and their skill chips, so the
+   * section reads as a colour system rather than a list. Each one clears 5.3:1
+   * with `--ink-fg`, which is why they can be filled under text and not just
+   * used as decoration.
+   */
+  --color-ink-1: #8b6bff;
+  --color-ink-2: #4fd6c8;
+  --color-ink-3: #ffd23f;
+  --color-ink-4: #ff8fae;
+  --color-ink-fg: #0a0a0f;
 }
 
 .dark {
-  --color-bg: #12100e;
-  --color-fg: #f7f4ed;
-  --color-muted: #9a9187;
-  --color-border: #2e2822;
-  --color-rule: #f7f4ed;
-  --color-surface: #1a1714;
+  --color-bg: #0b0a12;
+  --color-fg: #f4f3f7;
+  --color-muted: #97949f; /* 6.61:1 */
+  --color-border: #262336;
+  --color-rule: #f4f3f7;
+  --color-surface: #15131f;
 
-  /* On near-black, one lighter red covers every role at 6.74:1. */
-  --color-accent: #ff6b4a;
-  --color-accent-strong: #ff6b4a;
-  --color-accent-text: #ff8a6b;
-  --color-accent-fg: #12100e;
+  /* On the near-black, one lighter violet covers the solid roles at 5.29:1. */
+  --color-accent: #8b6bff;
+  --color-accent-strong: #8b6bff;
+  --color-accent-text: #b9a3ff; /* 9.14:1 */
+  --color-accent-fg: #0b0a12;
+
+  /* The inks always carry near-black text, so only that flips. */
+  --color-ink-fg: #0b0a12;
+}
+
+/*
+ * Display voice. Kept as variables rather than inlined so the whole type scale
+ * moves together when it is retuned.
+ */
+:root {
+  --display-tracking-xl: -0.05em;
+  --display-tracking-lg: -0.04em;
+  --display-tracking-md: -0.03em;
+  --display-tracking-sm: -0.02em;
+  --display-weight: 800;
+  --eyebrow-tracking: 0.22em;
+  --grain-opacity: 0.22;
+  --rule-width: 2px;
+}
+
+/*
+ * ---------------------------------------------------------------------------
+ * Expressive front door
+ * ---------------------------------------------------------------------------
+ * The homepage gets scale, colour and one asymmetry; the case study pages, the
+ * surface a visitor actually reads, stay strictly on the grid.
+ *
+ * These rules are unlayered on purpose: an unlayered rule outranks Tailwind's
+ * utility layer whatever its specificity, which is what lets them restyle
+ * components from here instead of threading classes through the markup. The
+ * trade is that they lean on class names that are in the HTML
+ * (`.grain`, `li.group`), so a component rewritten with different utilities
+ * would silently drop out. They are kept few and grouped here for that reason.
+ */
+
+/*
+ * The four inks rotate down the list. The ink is set once on each group item
+ * and inherits, so the counter and that group's skill chips always agree.
+ * `.reveal-group` is the outer list's own class and is what distinguishes it
+ * from the nested skill lists, which must not rotate on their own index.
+ */
+#expertise .reveal-group > li {
+  --ink: var(--color-ink-1);
+}
+#expertise .reveal-group > li:nth-child(4n + 2) {
+  --ink: var(--color-ink-2);
+}
+#expertise .reveal-group > li:nth-child(4n + 3) {
+  --ink: var(--color-ink-3);
+}
+#expertise .reveal-group > li:nth-child(4n) {
+  --ink: var(--color-ink-4);
+}
+
+/* The expertise index reads as a filled counter, not a small numeral. */
+#expertise .numeral {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--color-ink-fg);
+  font-weight: 700;
+}
+
+/* Skill chips pick up their group's ink. */
+#expertise li li {
+  border-radius: 999px;
+  border-color: var(--ink);
+}
+
+/* The hero's accent field, present enough to read as a colour, not a tint. */
+.blur-3xl {
+  opacity: 0.4;
+}
+
+/*
+ * The name at display scale, breaking one column into the label margin. Scoped
+ * to the hero (`section.grain`) so the /work title, which sits in a plain
+ * container with no margin to bleed into, is untouched.
+ */
+.display-xl {
+  font-size: clamp(2.75rem, 8.5vw, 6.5rem);
+}
+
+@media (min-width: 1024px) {
+  section.grain .display-xl {
+    margin-left: -2.5rem;
+  }
+}
+
+/*
+ * Project covers alternate side to side, which makes the list read as a
+ * sequence of objects rather than rows. Below `sm` the card is a single stacked
+ * column, so the override only applies once the two-column layout exists.
+ *
+ * The cover keeps its 17rem width up to `2xl`, deliberately. Widening it
+ * earlier squeezes the summary beside it: measured at 1280px, a 21rem cover
+ * drops that paragraph to ~46 characters per line, well under a comfortable
+ * measure, and this is the block a visitor reads before deciding to open a case
+ * study. The section is indented by 13.5rem from `lg`, so the room only exists
+ * on a genuinely wide screen.
+ */
+@media (min-width: 640px) {
+  li.group:nth-child(even) > a {
+    grid-template-columns: 1fr minmax(0, 17rem);
+  }
+
+  li.group:nth-child(even) > a > div:first-child {
+    order: 2;
+  }
+}
+
+@media (min-width: 1536px) {
+  li.group > a {
+    grid-template-columns: minmax(0, 22rem) 1fr;
+  }
+
+  li.group:nth-child(even) > a {
+    grid-template-columns: 1fr minmax(0, 22rem);
+  }
 }
 
 @layer base {
@@ -120,7 +251,7 @@
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--eyebrow-tracking);
     text-transform: uppercase;
   }
 
@@ -132,26 +263,30 @@
    */
   .display-xl {
     font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: var(--display-weight);
     line-height: 0.96;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--display-tracking-xl);
   }
 
   .display-lg {
     font-size: clamp(1.875rem, 4.4vw, 3.25rem);
+    font-weight: var(--display-weight);
     line-height: 1.03;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--display-tracking-lg);
   }
 
   .display-md {
     font-size: clamp(1.625rem, 3.2vw, 2.375rem);
+    font-weight: var(--display-weight);
     line-height: 1.1;
-    letter-spacing: -0.015em;
+    letter-spacing: var(--display-tracking-md);
   }
 
   .display-sm {
     font-size: clamp(1.25rem, 2vw, 1.625rem);
+    font-weight: var(--display-weight);
     line-height: 1.2;
-    letter-spacing: -0.01em;
+    letter-spacing: var(--display-tracking-sm);
   }
 
   /* Oversized editorial numeral, e.g. the process step index. */
@@ -163,7 +298,7 @@
 
   /* A heavy full-bleed rule — the main structural device of the layout. */
   .rule-strong {
-    border-top: 2px solid var(--color-rule);
+    border-top: var(--rule-width) solid var(--color-rule);
   }
 
   /* Subtle paper grain so flat colour fields don't look like plain CSS. */
@@ -178,13 +313,13 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: var(--grain-opacity);
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   .dark .grain::before {
-    opacity: 0.3;
+    opacity: calc(var(--grain-opacity) * 0.75);
   }
 
   /*

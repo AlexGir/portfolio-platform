@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
@@ -42,6 +42,15 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Tells the browser both schemes are supported, so its own chrome — scrollbars,
+ * form controls, the address bar on mobile — follows the page instead of
+ * staying light behind a dark layout.
+ */
+export const viewport: Viewport = {
+  colorScheme: 'light dark',
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
@@ -55,7 +64,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="min-h-dvh">
         <a
           href="#content"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent-strong focus:px-3 focus:py-2 focus:text-accent-fg"
         >
           Aller au contenu
         </a>
