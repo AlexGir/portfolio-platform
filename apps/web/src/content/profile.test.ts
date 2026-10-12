@@ -28,6 +28,13 @@ describe('profile content', () => {
     }
   });
 
+  it('ships the social share card', () => {
+    // The card is a committed PNG rendered from this file by `og:capture`, so
+    // nothing at build time notices if it goes missing — a share would silently
+    // fall back to a bare text preview.
+    expect(existsSync(join(PUBLIC_DIR, 'og.png')), 'missing public/og.png').toBe(true);
+  });
+
   it('uses a plausible contact address', () => {
     expect(profile.email).toMatch(/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i);
   });
