@@ -58,17 +58,10 @@ export const expertiseAreas: ExpertiseArea[] = [
     ],
   },
   {
-    title: 'Profil technique',
+    title: 'Culture technique',
     summary:
       "Je conçois en sachant ce qu'une option coûte à implémenter et ce qu'une modification coûte à reprendre.",
-    skills: [
-      'TypeScript',
-      'React',
-      'Next.js',
-      'HTML / CSS',
-      'Material UI',
-      'Handoff et spécifications techniques',
-    ],
+    skills: ['TypeScript', 'React', 'Handoff et spécifications techniques'],
   },
   {
     title: 'Outils',

@@ -36,11 +36,12 @@ export const profile: Profile = {
   role: 'Product Designer · SaaS B2B',
   location: 'Île-de-France · télétravail',
   tagline:
-    "Je transforme des outils métier complexes en produits qu'on prend en main sans formation. De la recherche utilisateur aux écrans livrés.",
+    "Product Designer sur des SaaS B2B complexes. Je rends utilisables des outils pensés pour des experts, de la recherche utilisateur jusqu'au design system.",
   bio: [
-    "Product Designer avec près de 5 ans d'expérience sur des produits SaaS B2B, de la modélisation des workflows jusqu'à la livraison des écrans et des user stories. Recherche utilisateur, conception d'interfaces, design systems : j'interviens sur toute la chaîne.",
-    "Chez SKALES, j'étais responsable du design produit de l'entreprise. J'ai piloté la refonte complète d'une plateforme de gestion de projets utilisée en R&D, en santé et dans l'innovation, et construit le design system devenu le socle de tous ses produits. Depuis juin 2025, je travaille en freelance et sur mes propres projets.",
-    "Mon parcours en informatique (Master Informatique et Design d'Interfaces, Paris-Saclay) change la façon dont je conçois : je sais ce qu'une option coûte à implémenter et ce qu'une modification coûte à reprendre, j'arbitre plus tôt entre l'idéal et le faisable, et je dialogue d'égal à égal avec les équipes de développement.",
+    "Je travaille depuis bientôt cinq ans sur des SaaS B2B, pour des labos de recherche, des structures de santé et des boîtes qui font de l'innovation. Je commence rarement par un écran. J'ai besoin de comprendre le métier d'abord, de voir comment les gens s'en servent, et de repérer les moments où le produit leur complique la journée. Le reste vient après.",
+    "Chez SKALES, j'étais le designer principal. Je suis arrivé en stage pour un audit UX, je suis resté cinq ans, et pendant ces cinq ans tout le design produit est passé par moi. J'ai mené la refonte de la plateforme, du premier entretien jusqu'aux écrans livrés. J'ai aussi monté le design system qui sert aujourd'hui de base à tous leurs produits, avec son theming par client et l'accessibilité réglée à cet endroit plutôt que dans chaque écran.",
+    "Ma formation est en informatique, un master mi-dev mi-design à Paris-Saclay, et je n'ai jamais lâché le sujet. Concrètement, ça joue surtout sur le moment où je tranche. Je sais à peu près ce qu'une fonctionnalité va coûter à construire, et ce qu'une reprise coûte quand on change d'avis trois sprints plus tard. Alors je pose la question quand elle sert encore à quelque chose.",
+    "Depuis juin 2025 je suis en freelance. J'ai accompagné le lancement d'une marketplace sur deux phases, la seconde parce que la première s'était bien passée. Le reste du temps, je teste les outils d'IA sur de vrais sujets de conception, pour voir ce qu'ils font gagner et ce qu'ils font perdre. Je garde aussi une habitude prise chez SKALES. J'écris ce que je cherche et pourquoi je tranche, parce qu'une méthode qui repose sur une seule personne ne tient pas longtemps.",
   ],
   email: 'alexandre.giraud1995@gmail.com',
   socials: [{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/alexandre-giraud-072624142' }],

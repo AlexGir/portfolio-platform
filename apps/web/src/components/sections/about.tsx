@@ -7,7 +7,7 @@ export function About() {
       id="about"
       eyebrow="Profil"
       title="À propos"
-      lead="Product Designer d'abord, avec un bagage technique qui change la façon dont je conçois."
+      lead="Designer produit, plutôt côté UX. Avec assez de bagage technique pour ne pas demander l'impossible."
     >
       <div className="reveal-group max-w-3xl">
         {profile.bio.map((paragraph, index) => (
