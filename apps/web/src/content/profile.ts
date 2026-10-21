@@ -36,7 +36,7 @@ export const profile: Profile = {
   role: 'Product Designer · SaaS B2B',
   location: 'Île-de-France · télétravail',
   tagline:
-    "Product Designer sur des SaaS B2B complexes. Je rends utilisables des outils pensés pour des experts, de la recherche utilisateur jusqu'au design system.",
+    'Je suis Product Designer. Je travaille sur des logiciels métier que les gens ouvrent tous les matins sans les avoir choisis. Mon premier réflexe est d’aller les regarder s’en servir.',
   bio: [
     "Je travaille depuis bientôt cinq ans sur des SaaS B2B, pour des labos de recherche, des structures de santé et des boîtes qui font de l'innovation. Je commence rarement par un écran. J'ai besoin de comprendre le métier d'abord, de voir comment les gens s'en servent, et de repérer les moments où le produit leur complique la journée. Le reste vient après.",
     "Chez SKALES, j'étais le designer principal. Je suis arrivé en stage pour un audit UX, je suis resté cinq ans, et pendant ces cinq ans tout le design produit est passé par moi. J'ai mené la refonte de la plateforme, du premier entretien jusqu'aux écrans livrés. J'ai aussi monté le design system qui sert aujourd'hui de base à tous leurs produits, avec son theming par client et l'accessibilité réglée à cet endroit plutôt que dans chaque écran.",

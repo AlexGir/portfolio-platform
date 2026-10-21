@@ -32,6 +32,34 @@ export interface Board {
   caption: string;
 }
 
+/**
+ * A product screenshot. Unlike a `Board` there is no standalone original to
+ * open, so the alt text is written per screen rather than derived from a title.
+ * The intrinsic size is declared to keep the layout from shifting as the image
+ * loads.
+ */
+export interface Screen {
+  /** Absolute path from the site root. */
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+}
+
+/**
+ * Several screenshots read as one figure, e.g. three phone screens side by
+ * side. The description belongs to the group rather than to each image: split
+ * across three alt texts it would be three disconnected fragments, so the group
+ * is exposed as a single labelled image and the individual files are decorative
+ * inside it.
+ */
+export interface ScreenGroup {
+  images: { src: string; width: number; height: number }[];
+  alt: string;
+  caption: string;
+}
+
 /** A decision table — the "why this option and not the others" of a case study. */
 export interface DecisionTable {
   headers: string[];
@@ -52,6 +80,8 @@ export interface ProcessStep {
   detail?: ProcessStepDetail;
   table?: DecisionTable;
   boards?: Board[];
+  /** Interface screenshots, shown after the boards of the same step. */
+  screens?: Screen[];
 }
 
 export interface ImpactMetric {
@@ -80,6 +110,12 @@ export interface CaseStudy {
     problem: string[];
     solution: string[];
   };
+  /**
+   * One screenshot above the problem statement. Without it a case study opens
+   * on a long stretch of text with nothing to look at, which is the opposite of
+   * what someone skimming a design portfolio is after.
+   */
+  openingScreen?: Screen | ScreenGroup;
   approachIntro: string;
   methods: string[];
   /** Research deliverables, shown with the approach rather than inside a step. */
@@ -123,6 +159,13 @@ export const caseStudies: CaseStudy[] = [
         "Au-delà des écrans, l'enjeu était d'installer une méthode UX dans une équipe qui n'en avait pas : des revues produit et des temps de réflexion UX greffés sur les rituels Scrum existants, pas un processus design parallèle.",
       ],
     },
+    openingScreen: {
+      src: '/planches/skales-refonte/00-parcours-ecrans.png',
+      alt: "Les dix écrans du parcours de création d'un projet, de la liste des projets à l'application ouverte.",
+      caption: 'Le parcours critique reconstruit, dans son état après refonte.',
+      width: 3180,
+      height: 1790,
+    },
     approachIntro:
       "Croiser ce que les gens disent et ce qu'ils font, parce que les deux divergent souvent.",
     methods: [
@@ -140,18 +183,6 @@ export const caseStudies: CaseStudy[] = [
         title: 'Synthèse de la recherche',
         caption:
           "Ce que les entretiens, les questionnaires et les données d'usage ont fait remonter, et ce que chaque constat impliquait pour la refonte.",
-      },
-      {
-        src: '/planches/skales-refonte/02-personas.html',
-        title: 'Personas',
-        caption:
-          "Quatre profils construits à partir des entretiens. Le coordinateur non scientifique incarne la nouvelle clientèle qui a rendu la refonte nécessaire : c'est lui le persona prioritaire.",
-      },
-      {
-        src: '/planches/skales-refonte/04-carte-experience.html',
-        title: "Carte d'expérience",
-        caption:
-          "Le parcours de création d'un projet vécu de bout en bout, avec les points de friction là où ils faisaient vraiment décrocher.",
       },
     ],
     steps: [
@@ -196,6 +227,16 @@ export const caseStudies: CaseStudy[] = [
               "Le parcours de création d'un projet, avant et après refonte. Les étapes supprimées sont celles que la plateforme pouvait déduire ou regrouper.",
           },
         ],
+        screens: [
+          {
+            src: '/planches/skales-refonte/07-licences-et-cout.png',
+            alt: "Écran d'association des licences et des groupes, avec le coût mensuel affiché avant validation.",
+            caption:
+              "L'étape la plus pénible du parcours d'origine. Le coût est désormais affiché avant validation, et la licence reste désactivable ensuite.",
+            width: 2880,
+            height: 1800,
+          },
+        ],
       },
       {
         index: '03',
@@ -225,6 +266,16 @@ export const caseStudies: CaseStudy[] = [
           ],
           chosenRow: 2,
         },
+        screens: [
+          {
+            src: '/planches/skales-refonte/06-inviter-membres.png',
+            alt: "Écran d'invitation des membres : chaque personne invitée se voit attribuer un rôle, qui détermine ce qu'elle verra ensuite.",
+            caption:
+              "Le rôle est choisi au moment de l'invitation. C'est lui qui détermine l'affichage par défaut de chaque membre.",
+            width: 2880,
+            height: 1800,
+          },
+        ],
       },
       {
         index: '04',
@@ -239,6 +290,16 @@ export const caseStudies: CaseStudy[] = [
             title: 'Rôles et droits',
             caption:
               "Les profils prêts à l'emploi, l'ajustement fin par utilisateur, et la formulation de chaque droit avec sa conséquence explicite avant validation.",
+          },
+        ],
+        screens: [
+          {
+            src: '/planches/skales-refonte/08-verifier-les-droits.png',
+            alt: 'Écran de vérification des droits proposés, chaque droit étant formulé en langage courant avec sa conséquence explicite.',
+            caption:
+              'Chaque droit est formulé simplement, et la conséquence pour la personne concernée est affichée avant validation.',
+            width: 2880,
+            height: 1920,
           },
         ],
       },
@@ -453,6 +514,16 @@ export const caseStudies: CaseStudy[] = [
         "J'ai volontairement repoussé les maquettes. Sur un produit sans utilisateurs publics, la tentation est de dessiner tout de suite ; le risque est de soigner une interface qui répond à la mauvaise question. J'ai commencé par la stratégie (besoins couverts, modèle économique, proposition de valeur), puis le benchmark, puis les entretiens.",
         "Les maquettes sont venues ensuite, accélérées par l'IA, et sont repassées en boucle par les tests : une quinzaine de journées de tests d'utilisabilité, d'A/B testing et d'audit heuristique réparties sur les six mois.",
       ],
+    },
+    openingScreen: {
+      images: [
+        { src: '/planches/marketplace-closers/07-reco-01.png', width: 1170, height: 2532 },
+        { src: '/planches/marketplace-closers/08-match.png', width: 1170, height: 2532 },
+        { src: '/planches/marketplace-closers/09-resultats.png', width: 1170, height: 2532 },
+      ],
+      alt: "Trois écrans de l'application mobile : une recommandation de mission, l'écran de match, et le tableau de bord des résultats du closer.",
+      caption:
+        "L'application telle qu'elle a été prototypée et testée. Le swipe a été retenu après comparaison avec une présentation en liste.",
     },
     approachIntro:
       "Commencer par la stratégie et le marché, finir par les pixels : l'inverse du réflexe habituel sur un produit qui n'existe pas encore.",

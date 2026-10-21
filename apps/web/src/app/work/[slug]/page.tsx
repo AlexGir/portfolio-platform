@@ -10,6 +10,7 @@ import { ReflectionCallout } from '@/components/case-study/reflection-callout';
 import { ImpactGrid } from '@/components/case-study/impact-grid';
 import { CaseStudyNav } from '@/components/case-study/case-study-nav';
 import { BoardGallery } from '@/components/case-study/board-figure';
+import { OpeningScreen, ScreenNote } from '@/components/case-study/screen-figure';
 import { ReadTracker } from '@/components/case-study/read-tracker';
 import { caseStudies, getCaseStudy } from '@/content/case-studies';
 
@@ -82,6 +83,17 @@ export default async function CaseStudyPage({ params }: { params: Params }) {
 
           <Container className="py-14 sm:py-20">
             <MetaGrid meta={study.meta} />
+
+            {study.openingScreen ? (
+              <div className="mt-16">
+                {/* The one image loaded eagerly: it is above the fold on most
+                    screens, and lazy-loading it would leave the page opening on
+                    an empty box. The note sits here, under the first screens a
+                    visitor sees, so it is read by anyone who sees any of them. */}
+                <OpeningScreen screen={study.openingScreen} />
+                <ScreenNote />
+              </div>
+            ) : null}
 
             <div className="reveal-group mt-20 grid gap-x-12 gap-y-10 lg:grid-cols-2">
               <div>

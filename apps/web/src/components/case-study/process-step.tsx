@@ -1,6 +1,7 @@
 import type { ProcessStep as ProcessStepData } from '@/content/case-studies';
 import { DecisionTable } from './decision-table';
 import { BoardGallery } from './board-figure';
+import { ScreenFigure } from './screen-figure';
 
 /**
  * One numbered beat of a case study's narrative, with an optional detail
@@ -44,6 +45,10 @@ export function ProcessStep({ step }: { step: ProcessStepData }) {
         {step.table ? <DecisionTable table={step.table} /> : null}
 
         {step.boards ? <BoardGallery boards={step.boards} /> : null}
+
+        {step.screens?.map((screen) => (
+          <ScreenFigure key={screen.src} screen={screen} />
+        ))}
       </div>
     </li>
   );

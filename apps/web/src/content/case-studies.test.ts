@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { caseStudies, getCaseStudy } from './case-studies';
-import type { Board } from './case-studies';
+import type { Board, Screen, ScreenGroup } from './case-studies';
 
 const PUBLIC_DIR = join(import.meta.dirname, '../../public');
 
@@ -10,6 +10,30 @@ function allBoards(): Board[] {
   return caseStudies.flatMap((study) => [
     ...(study.approachBoards ?? []),
     ...study.steps.flatMap((step) => step.boards ?? []),
+  ]);
+}
+
+interface ScreenFigure {
+  images: { src: string; width: number; height: number }[];
+  alt: string;
+  caption: string;
+}
+
+/** Flattens both figure shapes — one screen, or a labelled group of them. */
+function asFigure(screen: Screen | ScreenGroup): ScreenFigure {
+  return 'images' in screen
+    ? screen
+    : {
+        images: [{ src: screen.src, width: screen.width, height: screen.height }],
+        alt: screen.alt,
+        caption: screen.caption,
+      };
+}
+
+function allScreenFigures(): ScreenFigure[] {
+  return caseStudies.flatMap((study) => [
+    ...(study.openingScreen ? [asFigure(study.openingScreen)] : []),
+    ...study.steps.flatMap((step) => (step.screens ?? []).map(asFigure)),
   ]);
 }
 
@@ -78,6 +102,31 @@ describe('case studies content', () => {
       expect(board.title).not.toBe('');
       expect(board.caption.length).toBeGreaterThan(20);
     }
+  });
+
+  it('ships every interface screenshot, with the alt text and size it declares', () => {
+    for (const figure of allScreenFigures()) {
+      expect(figure.images.length).toBeGreaterThan(0);
+
+      for (const image of figure.images) {
+        expect(image.src).toMatch(/^\/planches\/[a-z0-9/-]+\.png$/);
+        expect(existsSync(join(PUBLIC_DIR, image.src)), `missing screen: ${image.src}`).toBe(true);
+
+        // Declared up front so the page does not jump while the image loads.
+        expect(image.width).toBeGreaterThan(0);
+        expect(image.height).toBeGreaterThan(0);
+      }
+
+      // Alt text carries the content of the figure for anyone who cannot see
+      // it, so an empty or token value is a bug, not a style choice.
+      expect(figure.alt.length, `alt too short: ${figure.images[0]!.src}`).toBeGreaterThan(30);
+      expect(figure.caption.length).toBeGreaterThan(20);
+    }
+  });
+
+  it('never shows the same screenshot twice', () => {
+    const sources = allScreenFigures().flatMap((figure) => figure.images.map((i) => i.src));
+    expect(new Set(sources).size).toBe(sources.length);
   });
 
   it('never embeds the same board twice', () => {
