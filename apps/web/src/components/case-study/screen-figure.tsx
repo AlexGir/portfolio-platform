@@ -26,15 +26,33 @@ export function ScreenFigure({ screen, priority = false }: { screen: Screen; pri
         data-umami-event-ecran={screen.src}
         className="group block overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-accent focus-visible:border-accent"
       >
-        <img
-          src={screen.src}
-          alt={screen.alt}
-          width={screen.width}
-          height={screen.height}
-          loading={priority ? 'eager' : 'lazy'}
-          decoding={priority ? 'sync' : 'async'}
-          className="block h-auto w-full"
-        />
+        {/*
+          `<picture>` rather than two images toggled with CSS: a hidden image is
+          still downloaded, which would make the phone pay for the file it is
+          not shown. Only the matching source is fetched here.
+
+          One caveat worth knowing: `alt` belongs to the `<img>` and cannot vary
+          by breakpoint, so it describes the full figure in both cases.
+        */}
+        <picture>
+          {screen.mobile ? (
+            <source
+              media="(min-width: 640px)"
+              srcSet={screen.src}
+              width={screen.width}
+              height={screen.height}
+            />
+          ) : null}
+          <img
+            src={screen.mobile ? screen.mobile.src : screen.src}
+            alt={screen.alt}
+            width={screen.mobile ? screen.mobile.width : screen.width}
+            height={screen.mobile ? screen.mobile.height : screen.height}
+            loading={priority ? 'eager' : 'lazy'}
+            decoding={priority ? 'sync' : 'async'}
+            className="block h-auto w-full"
+          />
+        </picture>
         <span className="flex justify-end border-t border-border px-4 py-2.5 text-sm">
           <span className="whitespace-nowrap text-muted transition-colors group-hover:text-accent">
             Voir en grand ↗

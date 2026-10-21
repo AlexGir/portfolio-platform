@@ -45,6 +45,12 @@ export interface Screen {
   caption: string;
   width: number;
   height: number;
+  /**
+   * A narrow-screen substitute, when the main image does not survive being
+   * shrunk to a phone column. Served through `<picture>`, so only the matching
+   * file is downloaded. The full image stays the "see it large" target.
+   */
+  mobile?: { src: string; width: number; height: number };
 }
 
 /**
@@ -165,6 +171,14 @@ export const caseStudies: CaseStudy[] = [
       caption: 'Le parcours critique reconstruit, dans son état après refonte.',
       width: 3180,
       height: 1790,
+      // Ten screens side by side leave each one ~32px wide on a phone, which is
+      // noise rather than an image. The first screen of the same flow is shown
+      // instead; the full panorama stays one tap away.
+      mobile: {
+        src: '/planches/skales-refonte/00-liste-des-projets.png',
+        width: 2880,
+        height: 1800,
+      },
     },
     approachIntro:
       "Croiser ce que les gens disent et ce qu'ils font, parce que les deux divergent souvent.",

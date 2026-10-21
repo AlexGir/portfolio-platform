@@ -24,7 +24,10 @@ function asFigure(screen: Screen | ScreenGroup): ScreenFigure {
   return 'images' in screen
     ? screen
     : {
-        images: [{ src: screen.src, width: screen.width, height: screen.height }],
+        images: [
+          { src: screen.src, width: screen.width, height: screen.height },
+          ...(screen.mobile ? [screen.mobile] : []),
+        ],
         alt: screen.alt,
         caption: screen.caption,
       };
