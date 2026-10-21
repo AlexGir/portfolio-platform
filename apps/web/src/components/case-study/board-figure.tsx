@@ -31,25 +31,25 @@ export function BoardFigure({ board }: { board: Board }) {
         className="group block overflow-hidden rounded-xl border border-border bg-surface transition-colors hover:border-accent focus-visible:border-accent"
       >
         {/*
-          On a phone the full board scaled to ~325px is unreadable, so it gets a
-          minimum width and scrolls sideways instead — the same affordance the
-          decision tables use. From `sm` up it simply fits the column.
+          The board always fits the column, including on a phone where it is too
+          small to read: it still shows the composition, and the whole figure
+          opens the standalone HTML original, which is the readable version.
+          Making it scroll sideways instead was worse on both counts — too small
+          to read *and* impossible to see whole.
 
           A plain <img>, not next/image: these are fixed-size static exports, and
           image optimisation would pull sharp into the standalone runtime for no
           real gain.
         */}
-        <div className="overflow-x-auto">
-          <img
-            src={imageFor(board)}
-            alt={`Planche de design : ${board.title}`}
-            width={BOARD_WIDTH}
-            height={BOARD_HEIGHT}
-            loading="lazy"
-            decoding="async"
-            className="block h-auto w-full min-w-[34rem] sm:min-w-0"
-          />
-        </div>
+        <img
+          src={imageFor(board)}
+          alt={`Planche de design : ${board.title}`}
+          width={BOARD_WIDTH}
+          height={BOARD_HEIGHT}
+          loading="lazy"
+          decoding="async"
+          className="block h-auto w-full"
+        />
 
         <span className="flex items-center justify-between gap-3 border-t border-border px-4 py-2.5 text-sm">
           <span className="font-medium">{board.title}</span>
